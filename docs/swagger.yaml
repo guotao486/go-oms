@@ -1,0 +1,310 @@
+definitions:
+  app.Pager:
+    properties:
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_rows:
+        type: integer
+    type: object
+  app.Success:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      message:
+        type: string
+    type: object
+  demo.Tag:
+    properties:
+      created_on:
+        description: |-
+          CreatedBy  string `json:"created_by"`            // 创建人
+          ModifiedBy string `json:"modified_by"`           // 修改人
+        type: integer
+      deleted_on:
+        description: 删除时间
+        type: integer
+      id:
+        description: id
+        type: integer
+      is_del:
+        description: 是否删除 0 未删除 1 已删除
+        type: integer
+      modified_on:
+        description: 修改时间
+        type: integer
+      name:
+        description: 标签名称
+        type: string
+      state:
+        description: 状态 0 禁用 1 启用
+        type: integer
+    type: object
+  demo.TagSwagger:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/demo.Tag'
+        type: array
+      pager:
+        $ref: '#/definitions/app.Pager'
+        type: object
+    type: object
+  errcode.Error:
+    type: object
+  request.AuthRequest:
+    properties:
+      appKey:
+        type: string
+      appSecret:
+        type: string
+    type: object
+  request.UpdateTagRequest:
+    properties:
+      id:
+        type: integer
+      modifiedBy:
+        type: string
+      name:
+        type: string
+      state:
+        type: integer
+    required:
+    - id
+    - modifiedBy
+    - state
+    type: object
+info:
+  contact: {}
+  description: GO语言编程之旅 blog
+  license: {}
+  termsOfService: www.bookchat.net
+  title: GO语言编程之旅 blog
+  version: "1.0"
+paths:
+  /api/v1/tag:
+    get:
+      parameters:
+      - description: 标签名称
+        in: query
+        maxLength: 100
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/demo.Tag'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取单个标签
+  /api/v1/tags:
+    get:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        type: string
+      - description: 标签名称
+        in: query
+        maxLength: 100
+        name: name
+        type: string
+      - default: 1
+        description: 状态
+        enum:
+        - 0
+        - 1
+        in: query
+        name: state
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/demo.TagSwagger'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取多个标签
+    post:
+      parameters:
+      - description: 标签名称
+        in: formData
+        maxLength: 100
+        minLength: 3
+        name: name
+        required: true
+        type: string
+      - default: 1
+        description: 状态
+        enum:
+        - 0
+        - 1
+        in: formData
+        name: state
+        type: integer
+      - description: 创建者
+        in: formData
+        maxLength: 100
+        minLength: 3
+        name: created_by
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/app.Success'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 新增标签
+  /api/v1/tags/{id}:
+    delete:
+      parameters:
+      - description: 标签 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 删除标签
+    put:
+      parameters:
+      - description: 标签 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: UpdateTagRequest
+        in: body
+        name: UpdateTagRequest
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateTagRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            items:
+              $ref: '#/definitions/app.Success'
+            type: array
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 更新标签
+  /auth:
+    post:
+      parameters:
+      - description: AuthRequest
+        in: body
+        name: AuthRequest
+        required: true
+        schema:
+          $ref: '#/definitions/request.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/app.Success'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取auth token
+      tags:
+      - Auth
+  /upload/file:
+    post:
+      parameters:
+      - default: 1
+        description: 上传类型
+        in: formData
+        name: type
+        required: true
+        type: integer
+      - description: file
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/app.Success'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 文件上传
+      tags:
+      - Upload
+swagger: "2.0"
