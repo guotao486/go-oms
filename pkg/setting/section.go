@@ -33,6 +33,12 @@ type ServerSettingS struct {
 //
 // @Description: 应用配置
 type AppSettingS struct {
+	// 模板配置
+	TemplatePath       string // 模板文件目录
+	TemplateLayoutPath string // 根模板文件目录
+	TemplateStuffix    string // 模板文件后缀
+
+	// 分页配置
 	DefaultPageSize int    // 默认分页数量
 	MaxPageSize     int    // 默认最大分页数量
 	LogSavePath     string // 默认应用日志存储地址

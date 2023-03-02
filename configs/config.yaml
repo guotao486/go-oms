@@ -4,6 +4,9 @@ Server: #服务配置
   ReadTimeout: 60 # http读取最大时间
   WriteTimeout: 60 # http写入最大时间
 App: # 应用配置
+  TemplatePath: templates
+  TemplateLayoutPath: common
+  TemplateStuffix: .html
   DefaultPageSize: 10 # 默认分页数量
   MaxPageSize: 100 # 最大分页数量
   LogSavePath: storage/logs # 默认应用日志存储地址

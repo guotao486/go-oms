@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:27
- * @LastEditTime: 2023-02-28 17:10:08
+ * @LastEditTime: 2023-03-02 14:42:32
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\routers\router.go
@@ -15,6 +15,7 @@ import (
 	"oms/global"
 	"oms/internal/controller"
 	"oms/internal/middleware"
+	"oms/pkg/app"
 	"oms/pkg/limiter"
 	"time"
 
@@ -37,14 +38,15 @@ func createMyRender() multitemplate.Renderer {
 	commonTemplate := []string{"templates/common/base.html", "templates/common/head.html", "templates/common/header.html", "templates/common/menus.html", "templates/common/footer.html", "templates/common/footer_script.html"}
 	r.AddFromFiles("login", "templates/login/index.html")
 
-	r.AddFromFiles("/user/create", append(commonTemplate, "templates/user/create.html")...)
+	r.AddFromFiles("user/create", append(commonTemplate, "templates/user/create.html")...)
 	return r
 }
 
 func NewRouter() *gin.Engine {
 	r := gin.New()
 	// r.LoadHTMLGlob("templates/**/*") // gin 默认单模板,继承会发生block覆盖
-	r.HTMLRender = createMyRender() //
+	// r.HTMLRender = createMyRender() //
+	r.HTMLRender = app.LoadTemplateFiles()
 	r.Static("/assets", "./assets")
 	if global.ServerSetting.RunMode == "debug" {
 		// 默认

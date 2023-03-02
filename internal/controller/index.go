@@ -14,5 +14,5 @@ func NewIndex() *IndexController {
 
 // 首页
 func (i *IndexController) Home(c *gin.Context) {
-	c.HTML(http.StatusOK, "home/index.html", nil)
+	c.HTML(http.StatusOK, "home/index", nil)
 }

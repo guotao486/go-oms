@@ -20,6 +20,6 @@ func (a *AuthController) Login(c *gin.Context) {
 		c.Redirect(301, "/")
 	}
 	if c.Request.Method == http.MethodGet {
-		c.HTML(http.StatusOK, "login", nil)
+		c.HTML(http.StatusOK, "login/index", nil)
 	}
 }
