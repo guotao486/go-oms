@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:27
- * @LastEditTime: 2023-02-19 12:31:40
+ * @LastEditTime: 2023-03-03 17:30:39
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\model\model.go
@@ -12,6 +12,7 @@ package model
 import (
 	"fmt"
 	"oms/global"
+	"oms/pkg/enum"
 	"oms/pkg/setting"
 	"time"
 
@@ -118,7 +119,7 @@ func updateTimeStampForCreateCallback(scope *gorm.Scope) {
  * @return {*}
  */
 func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
-	if _, ok := scope.Get("gorm:update_column"); ok {
+	if _, ok := scope.Get("gorm:update_column"); !ok {
 		_ = scope.SetColumn("ModifiedOn", time.Now().Unix())
 	}
 }
@@ -158,7 +159,7 @@ func deleteCallback(scope *gorm.Scope) {
 				scope.Quote(deletedOnField.DBName),
 				scope.AddToVars(now),
 				scope.Quote(isDelField.DBName),
-				scope.AddToVars(1),
+				scope.AddToVars(enum.IS_DEL_ENABLE),
 				addExtraSpaceIfExist(scope.CombinedConditionSql()),
 				addExtraSpaceIfExist(extraOption),
 			)).Exec()
