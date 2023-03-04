@@ -4,15 +4,14 @@
 // @param href
 // @param method
 // @param submitBtn
-function ajaxFormSubmit(url, formData, href = "/home", method = "POST",btn = null){
+function ajaxSubmit(url, formData, href = "/home", method = "POST",btn = null){
     $.ajax({
         url: url,
         method: method,
         data: formData,
         success: function(res) {
-            console.log(res)
-            if (res.Code != 200) {
-                ErrorMessage(res.Message);
+            if (res.code != 200) {
+                ErrorMessage(res.message);
                 if (btn) {
                     btn.text("提交").attr("disabled", false).removeClass("layui-disabled");
                 }
