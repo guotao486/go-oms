@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 20:49:23
- * @LastEditTime: 2023-03-04 11:51:25
+ * @LastEditTime: 2023-01-28 21:07:23
  * @LastEditors: GG
  * @Description: 参数验证国际化处理中间件
  * @FilePath: \oms\internal\middleware\translations.go
@@ -10,8 +10,6 @@
 package middleware
 
 import (
-	"reflect"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
@@ -43,28 +41,12 @@ func Translations() gin.HandlerFunc {
 			// 调用 RegisterDefaultTranslations 方法将验证器和对应语言类型的 Translator 注册进来，实现验证器的多语言支持
 			switch locale {
 			case "zh":
-				// 将label 标签的值替换字段名
-				v.RegisterTagNameFunc(func(field reflect.StructField) string {
-					label := field.Tag.Get("label")
-					if label == "" {
-						return field.Name
-					}
-					return label
-				})
 				_ = zh_translations.RegisterDefaultTranslations(v, trans)
 				break
 			case "en":
 				_ = en_translations.RegisterDefaultTranslations(v, trans)
 				break
 			default:
-				// 将label 标签的值替换字段名
-				v.RegisterTagNameFunc(func(field reflect.StructField) string {
-					label := field.Tag.Get("label")
-					if label == "" {
-						return field.Name
-					}
-					return label
-				})
 				_ = zh_translations.RegisterDefaultTranslations(v, trans)
 				break
 			}
