@@ -9,12 +9,12 @@ import (
 type User struct {
 	*Model
 	Username    string `gorm:"type:varchar(100);not null;" json:"username"`
-	Password    string `gorm:"not null;" json:"password"`
+	Password    string `gorm:"not null;" json:"-"`
 	Level       uint8  `gorm:"default:2" json:"level"`
 	State       uint8  `gorm:"default:1" json:"state"`
 	GroupID     uint32 `gorm:"default:0" json:"group_id"`
 	GroupLeader uint8  `gorm:"default:0" json:"group_leader"`
-	Salt        string `gorm:"type:varchar(10);not null"`
+	Salt        string `gorm:"type:varchar(10);not null" json:"-"`
 }
 
 func init() {
@@ -22,6 +22,10 @@ func init() {
 }
 
 func NewUser() *User {
+	return &User{}
+}
+
+func NewDefaultUser() *User {
 	return &User{
 		Level:       enum.DEFAULT_USER_LEVEL,
 		State:       enum.DEFAULT_STATE,

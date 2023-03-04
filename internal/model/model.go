@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:27
- * @LastEditTime: 2023-03-03 17:30:39
+ * @LastEditTime: 2023-03-03 17:36:25
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\model\model.go

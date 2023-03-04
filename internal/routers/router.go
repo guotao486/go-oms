@@ -78,11 +78,18 @@ func NewRouter() *gin.Engine {
 	authC := controller.NewAuth()
 	r.GET("/login", authC.Login)
 
+	// user module
 	userC := controller.NewUser()
 	userR := r.Group("/user")
+	userR.GET("/index", userC.Index)
 	userR.GET("/list", userC.List)
 	userR.GET("/create", userC.Create)
 	userR.POST("/create", userC.Create)
+	userR.GET("/update", userC.Update)
+	userR.POST("/update", userC.Update)
+	userR.DELETE("/delete/:id", userC.Delete)
+	// user module end
+
 	r.GET("/order/index", nil)
 	// auth 路由
 	// r.POST("/auth", api.GetAuth)
