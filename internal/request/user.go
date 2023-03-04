@@ -2,14 +2,14 @@ package request
 
 // 登录
 type LoginRequest struct {
-	Username string `form:"username" binding:"required"`
-	Password string `form:"password" binding:"required"`
+	Username string `form:"username" binding:"required,min=2,max=20"`
+	Password string `form:"password" binding:"required,min=6,max=20"`
 }
 
 // 创建
 type CreateUserRequest struct {
-	Username string `form:"username" binding:"required"`
-	Password string `form:"username" binding:"required"`
+	Username string `form:"username" binding:"required,min=2,max=20" label:"用户名"`
+	Password string `form:"username" binding:"required,min=6,max=20" label:"密码"`
 	Level    uint8  `form:"level" binding:"required"`
 }
 
