@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:25
- * @LastEditTime: 2023-01-28 12:32:45
+ * @LastEditTime: 2023-03-02 16:13:26
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\pkg\app\pagination.go
@@ -44,7 +44,7 @@ func GetPage(c *gin.Context) int {
 //	@params c
 //	@return int
 func GetPageSize(c *gin.Context) int {
-	pageSize := convert.StrTo(c.Query("page_size")).MustInt()
+	pageSize := convert.StrTo(c.Query("limit")).MustInt()
 	if pageSize <= 0 {
 		return global.AppSetting.DefaultPageSize
 	}

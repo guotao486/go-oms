@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"io/ioutil"
 	"oms/global"
 	"os"
@@ -44,8 +43,6 @@ func LoadTemplateFiles() multitemplate.Renderer {
 	var moduleFiles []string   // 模块模板
 	var templateFiles []string // 根目录模板
 	for _, fi := range rd {
-		fmt.Printf("fi.Name(): %v\n", fi.Name())
-		fmt.Println(templateDir + "/" + templateLayoutDir)
 		if fi.IsDir() {
 			files := getFilesList(path.Join(templateDir, fi.Name()), stuffix)
 			// 根模板文件

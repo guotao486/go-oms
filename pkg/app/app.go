@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:27
- * @LastEditTime: 2023-03-01 16:15:34
+ * @LastEditTime: 2023-03-02 16:33:04
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\pkg\app\app.go
@@ -39,14 +39,14 @@ func NewResponse(ctx *gin.Context) *Response {
 }
 
 type Success struct {
-	Code    uint8  `json:"code"`
-	Message string `json:"message"`
-	Data    interface{}
+	Code    uint8       `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
 
 func NewSuccess() *Success {
 	return &Success{
-		Code:    200,
+		Code:    http.StatusOK,
 		Message: "success",
 	}
 }
@@ -56,12 +56,9 @@ func NewSuccess() *Success {
 //	@Description: 返回响应
 //	@receiver r
 //	@params data
-func (r Response) ToResponse(data interface{}) {
+func (r *Response) ToResponse(data interface{}) {
 	if data == nil {
-		data = &Success{
-			Code:    200,
-			Message: "success",
-		}
+		data = NewSuccess()
 	}
 	r.Ctx.JSON(http.StatusOK, data)
 }
@@ -73,7 +70,7 @@ func (r Response) ToResponse(data interface{}) {
  * @param {interface{}} data
  * @return {*}
  */
-func (r Response) ToSuccessResponse(data interface{}) {
+func (r *Response) ToSuccessResponse(data interface{}) {
 	success := NewSuccess()
 	if data != nil {
 		success.Data = data
@@ -87,8 +84,8 @@ func (r Response) ToSuccessResponse(data interface{}) {
 //	@receiver r
 //	@params list
 //	@params totalRows
-func (r Response) ToResponseList(list interface{}, totalRows int) {
-	r.Ctx.JSON(http.StatusOK, gin.H{
+func (r *Response) ToResponseList(list interface{}, totalRows int) {
+	r.ToSuccessResponse(gin.H{
 		"list": list,
 		"pager": Pager{
 			Page:      GetPage(r.Ctx),
@@ -103,7 +100,7 @@ func (r Response) ToResponseList(list interface{}, totalRows int) {
 //	@Description: 返回错误响应
 //	@receiver r
 //	@params err
-func (r Response) ToErrorResponse(err *errcode.Error) {
+func (r *Response) ToErrorResponse(err *errcode.Error) {
 	response := gin.H{
 		"code":    err.Code(),
 		"message": err.Msg(),
@@ -115,4 +112,19 @@ func (r Response) ToErrorResponse(err *errcode.Error) {
 	}
 
 	r.Ctx.JSON(err.StatusCode(), response)
+}
+
+// 400
+func (r *Response) ToErrorBadRequestHtml(err *errcode.Error) {
+	r.Ctx.HTML(http.StatusBadRequest, "error/400", err.Msg())
+}
+
+// 403
+func (r *Response) ToErrorForbiddenHtml(err *errcode.Error) {
+	r.Ctx.HTML(http.StatusForbidden, "error/403", err.Msg())
+}
+
+// 404
+func (r *Response) ToErrorNotFoundHtml(err *errcode.Error) {
+	r.Ctx.HTML(http.StatusNotFound, "error/404", err.Msg())
 }

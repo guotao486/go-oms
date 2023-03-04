@@ -21,6 +21,8 @@ var (
 	ErrorUpdateUserFail  = NewError(20020003, "更新用户失败")
 	ErrorDeleteUserFail  = NewError(20020004, "删除用户失败")
 	ErrorCountUserFail   = NewError(20020005, "统计用户失败")
+	ErrorUserNotFound    = NewError(20020006, "用户不存在")
+	ErrorUserExists      = NewError(20020007, "用户名已存在")
 
 	ErrorUploadFileFail = NewError(20030001, "上传文件失败")
 )
