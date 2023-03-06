@@ -33,6 +33,7 @@ type ServerSettingS struct {
 //
 // @Description: 应用配置
 type AppSettingS struct {
+	AppName string // 项目名称
 	// 模板配置
 	TemplatePath       string // 模板文件目录
 	TemplateLayoutPath string // 根模板文件目录

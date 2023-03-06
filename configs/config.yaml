@@ -4,6 +4,7 @@ Server: #服务配置
   ReadTimeout: 60 # http读取最大时间
   WriteTimeout: 60 # http写入最大时间
 App: # 应用配置
+  AppName: OMS
   TemplatePath: templates
   TemplateLayoutPath: common
   TemplateStuffix: .html

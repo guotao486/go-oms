@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-03-01 09:30:13
- * @LastEditTime: 2023-03-04 10:30:50
+ * @LastEditTime: 2023-03-06 09:21:40
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\controller\user.go
@@ -21,7 +21,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserController struct{}
+type UserController struct {
+	*Controller
+}
 
 func NewUser() *UserController {
 	return &UserController{}
@@ -29,7 +31,7 @@ func NewUser() *UserController {
 
 // 用户列表
 func (u *UserController) Index(c *gin.Context) {
-	c.HTML(http.StatusOK, "user/list", nil)
+	u.RenderHtml(c, http.StatusOK, "user/list", nil)
 }
 
 // 用户列表数据
@@ -71,7 +73,7 @@ func (u *UserController) List(c *gin.Context) {
 // 创建用户
 func (u *UserController) Create(c *gin.Context) {
 	if c.Request.Method == http.MethodGet {
-		c.HTML(http.StatusOK, "user/create", nil)
+		u.RenderHtml(c, http.StatusOK, "user/create", nil)
 	} else {
 		param := request.CreateUserRequest{}
 		response := app.NewResponse(c)
@@ -128,7 +130,7 @@ func (u *UserController) Update(c *gin.Context) {
 			response.ToErrorNotFoundHtml(errcode.ErrorUserNotFound)
 			return
 		}
-		c.HTML(http.StatusOK, "user/update", user)
+		u.RenderHtml(c, http.StatusOK, "user/update", user)
 		return
 	} else {
 		param := request.UpdateUserPostRequest{}
