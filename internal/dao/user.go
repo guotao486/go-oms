@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 11:41:40
- * @LastEditTime: 2023-03-06 11:01:02
+ * @LastEditTime: 2023-03-06 16:14:05
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\dao\user.go
@@ -52,6 +52,18 @@ func (d *Dao) GetUserListPages(user *model.User, pageOffest, pageSize int) ([]*r
 	return users, nil
 }
 
+// 获取所有用户列表
+func (d *Dao) GetUserListAll(user *model.User) ([]*response.UserResponse, error) {
+	var users []*response.UserResponse
+	db := d.engine.Table(user.TableName())
+	db = db.Select("id,username,level,state,group_id,group_leader,created_on")
+	db = db.Where("state = ?", enum.DEFAULT_STATE)
+	if err := db.Where("is_del = ?", enum.IS_DEL_UNABLE).Find(&users).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
 // 根据ID查找用户
 func (d *Dao) GetFirstById(id uint32) (*model.User, error) {
 	user := model.NewUser()
@@ -85,4 +97,15 @@ func (d *Dao) UpdateUser(user *model.User, value interface{}) error {
 // 删除用户，有delete_on 和 is_del 字段则是软删除
 func (d *Dao) DeleteUser(user *model.User) error {
 	return d.engine.Model(&user).Where("id = ? and is_del = ?", user.ID, enum.IS_DEL_UNABLE).Delete(&user).Error
+}
+
+// 更新用户组字段
+func (d *Dao) BatchUpdateUserOnGroupID(userIds []uint8, groupId uint32) error {
+	user := model.NewUser()
+	return d.engine.Table(user.TableName()).Where("id IN ?", userIds).Updates(map[string]interface{}{"group_id": groupId}).Error
+}
+
+// 更新用户组长字段
+func (d *Dao) UpdateUserOnLeader(user *model.User) error {
+	return d.engine.Model(&user).Where("id = ?", user.ID).Updates(map[string]interface{}{"group_id": user.GroupID, "group_leader": user.GroupLeader}).Error
 }

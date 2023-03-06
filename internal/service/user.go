@@ -31,6 +31,12 @@ func (s *Service) GetUserCountList(param *request.GetListUserRequest) (int, erro
 	return s.dao.GetUserListCount(user)
 }
 
+// 获取全部用户
+func (s *Service) GetUserCountListAll() ([]*response.UserResponse, error) {
+	user := model.NewUser()
+	return s.dao.GetUserListAll(user)
+}
+
 // 根据id获取用户详情
 func (s *Service) GetUserInfoById(id uint32) (*model.User, error) {
 	user, err := s.dao.GetFirstById(id)

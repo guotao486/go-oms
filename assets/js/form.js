@@ -28,7 +28,7 @@ function ajaxSubmit(url, formData, href = "/home", method = "POST",btn = null){
             }
         },
         error: function(res) {
-            if (res.responseJSON.message) {
+            if (res.responseJSON) {
                 ErrorMessage(res.responseJSON.message);
                 ShowErrorMessage(res.responseJSON)
             } else {

@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:27
- * @LastEditTime: 2023-03-02 14:42:32
+ * @LastEditTime: 2023-03-06 17:29:16
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\routers\router.go
@@ -89,6 +89,15 @@ func NewRouter() *gin.Engine {
 	userR.POST("/update", userC.Update)
 	userR.DELETE("/delete/:id", userC.Delete)
 	// user module end
+
+	// userGroup module
+	userGroupC := controller.NewUserGroup()
+	userGroupR := r.Group("/group")
+	userGroupR.GET("/", userGroupC.Index)
+	userGroupR.GET("/list", userGroupC.List)
+	userGroupR.GET("/create", userGroupC.Create)
+	userGroupR.POST("/create", userGroupC.Create)
+	// userGroup end
 
 	r.GET("/order/index", nil)
 	// auth 路由

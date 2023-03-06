@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 10:57:20
- * @LastEditTime: 2023-02-28 15:32:48
+ * @LastEditTime: 2023-03-06 15:05:59
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\model\user_group.go
@@ -16,9 +16,10 @@ import (
 
 type UserGroup struct {
 	*Model
-	Title  string `gorm:"type:varchar(100);not null" json:"title"`
-	State  uint8  `gorm:"default:1;not null" json:"state"`
-	Leader uint8  `gorm:"default:0;not null" json:"leader"`
+	Title    string  `gorm:"type:varchar(100);not null" json:"title"`
+	State    uint8   `gorm:"default:1;not null" json:"state"`
+	Leader   uint8   `gorm:"default:0;not null" json:"leader"`
+	UserList []*User `gorm:"foreignKey:GroupID"`
 }
 
 func init() {
