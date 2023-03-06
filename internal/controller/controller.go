@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"net/http"
 	"oms/global"
 
 	"github.com/gin-gonic/gin"
@@ -16,5 +15,5 @@ func (c *Controller) RenderHtml(ctx *gin.Context, code int, name string, obj int
 		"appConfig": nil,
 		"appTitle":  global.AppSetting.AppName,
 	}
-	ctx.HTML(http.StatusOK, "user/list", data)
+	ctx.HTML(code, name, data)
 }

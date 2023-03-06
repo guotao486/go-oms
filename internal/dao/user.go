@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 11:41:40
- * @LastEditTime: 2023-03-02 15:36:17
+ * @LastEditTime: 2023-03-06 11:01:02
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\dao\user.go
@@ -43,7 +43,7 @@ func (d *Dao) GetUserListPages(user *model.User, pageOffest, pageSize int) ([]*r
 	db = db.Where("state = ?", user.State)
 
 	if user.Username != "" {
-		db = db.Where("username like %?%", user.Username)
+		db = db.Where("username like ?", "%"+user.Username+"%")
 	}
 	if err := db.Where("is_del = ?", enum.IS_DEL_UNABLE).Find(&users).Error; err != nil {
 		return nil, err

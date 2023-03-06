@@ -12,6 +12,7 @@ function ajaxSubmit(url, formData, href = "/home", method = "POST",btn = null){
         success: function(res) {
             if (res.code != 200) {
                 ErrorMessage(res.message);
+                ShowErrorMessage(res)
                 if (btn) {
                     btn.text("提交").attr("disabled", false).removeClass("layui-disabled");
                 }
@@ -29,6 +30,7 @@ function ajaxSubmit(url, formData, href = "/home", method = "POST",btn = null){
         error: function(res) {
             if (res.responseJSON.message) {
                 ErrorMessage(res.responseJSON.message);
+                ShowErrorMessage(res.responseJSON)
             } else {
                 ErrorMessage("提交失败！");
             }

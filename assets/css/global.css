@@ -1,3 +1,21 @@
 .layui-body .layui-main{
     margin: 15px;
 }
+
+.layui-elem-quote-error {
+    border-left: 5px solid #f73e03 !important;
+}
+
+.layui-elem-quote-warn {
+    border-left: 5px solid #ffb800 !important;
+}
+
+.layui-elem-quote {
+    display: flex;
+    position: relative;
+}
+
+.layui-elem-quote .layui-icon {
+    position: absolute;
+    right: 10px;
+}

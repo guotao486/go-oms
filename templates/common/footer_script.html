@@ -30,5 +30,10 @@ layui.use(['element', 'layer', 'util'], function(){
   });
   
 });
+$(document).ready(function(){ 
+  $("#message-section").on("click", ".layui-icon-close", function(event){
+      HideMessage($(this))
+  });
+});
 </script>
 {{end}}
