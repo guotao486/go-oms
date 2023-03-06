@@ -46,7 +46,7 @@ layui.use(['form', 'layer'], function(){
         formData = $('.layui-form').serialize()
         var btn = $(this);
         btn.text("提交中...").attr("disabled", "disabled").addClass("layui-disabled");
-        ajaxSubmit("/user/update",formData, "/user/index", "POST", btn)
+        ajaxSubmit("/user/update",formData, "/user/", "POST", btn)
         return false;
     });
 })

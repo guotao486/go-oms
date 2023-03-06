@@ -81,7 +81,7 @@ func NewRouter() *gin.Engine {
 	// user module
 	userC := controller.NewUser()
 	userR := r.Group("/user")
-	userR.GET("/index", userC.Index)
+	userR.GET("/", userC.Index)
 	userR.GET("/list", userC.List)
 	userR.GET("/create", userC.Create)
 	userR.POST("/create", userC.Create)

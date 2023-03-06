@@ -1,9 +1,18 @@
+<!--
+ * @Author: GG
+ * @Date: 2023-03-01 11:29:22
+ * @LastEditTime: 2023-03-06 12:12:55
+ * @LastEditors: GG
+ * @Description: 
+ * @FilePath: \oms\templates\common\menus.html
+ * 
+-->
 {{define "menus"}}
 <div class="layui-side layui-bg-black">
     <div class="layui-side-scroll">
         <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
         <ul class="layui-nav layui-nav-tree" lay-filter="test">
-        <li class="layui-nav-item layui-nav-itemed">
+        <!-- <li class="layui-nav-item layui-nav-itemed">
             <a class="" href="javascript:;">menu group 1</a>
             <dl class="layui-nav-child">
             <dd><a href="javascript:;">menu 1</a></dd>
@@ -19,9 +28,14 @@
             <dd><a href="javascript:;">list 2</a></dd>
             <dd><a href="">超链接</a></dd>
             </dl>
-        </li>
-        <li class="layui-nav-item"><a href="javascript:;">click menu item</a></li>
-        <li class="layui-nav-item"><a href="">the links</a></li>
+        </li> -->
+        {{- .urlPath -}}
+        
+        {{range $idx,$menu := .menus}}
+        <li class="layui-nav-item {{if eq $.urlPath $menu.Router}}layui-this{{end}} {{range $cMenu := $menu.ChildNode}}
+        {{if eq $.urlPath $cMenu.Router}}layui-this{{end}}
+        {{end}}"><a href="{{$menu.Router}}">{{$menu.Title}}</a></li>
+        {{end}}
         </ul>
     </div>
 </div>

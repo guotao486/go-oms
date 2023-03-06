@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
 <html>
-{{template "head"}}
+{{template "head" .}}
 <body>
 <div class="layui-layout layui-layout-admin">
-  {{template "header"}}
+  {{template "header" .}}
   
-  {{template "menus"}}
+  {{template "menus" .}}
   
   <div class="layui-body">
     {{block "content" . }}{{end}}

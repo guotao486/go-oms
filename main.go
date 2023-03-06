@@ -1,3 +1,12 @@
+/*
+ * @Author: GG
+ * @Date: 2023-02-28 08:57:23
+ * @LastEditTime: 2023-03-06 14:30:18
+ * @LastEditors: GG
+ * @Description:
+ * @FilePath: \oms\main.go
+ *
+ */
 package main
 
 import (
