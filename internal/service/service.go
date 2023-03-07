@@ -6,6 +6,7 @@ import (
 	"oms/internal/dao"
 
 	otgorm "github.com/eddycjy/opentracing-gorm"
+	"github.com/jinzhu/gorm"
 )
 
 type Service struct {
@@ -15,7 +16,12 @@ type Service struct {
 
 func New(ctx context.Context) *Service {
 	svc := &Service{ctx: ctx}
-	svc.dao = dao.New(otgorm.WithContext(svc.ctx, global.DBEngine))
+	svc.SetDao(global.DBEngine)
+	// svc.dao = dao.New(otgorm.WithContext(svc.ctx, global.DBEngine))
 	return svc
 	// return &Service{ctx: ctx, dao: dao.New(global.DBEngine)}
+}
+
+func (s *Service) SetDao(db *gorm.DB) {
+	s.dao = dao.New(otgorm.WithContext(s.ctx, db))
 }

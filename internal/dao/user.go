@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 11:41:40
- * @LastEditTime: 2023-03-06 16:14:05
+ * @LastEditTime: 2023-03-07 10:41:15
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\dao\user.go
@@ -100,9 +100,9 @@ func (d *Dao) DeleteUser(user *model.User) error {
 }
 
 // 更新用户组字段
-func (d *Dao) BatchUpdateUserOnGroupID(userIds []uint8, groupId uint32) error {
+func (d *Dao) BatchUpdateUserOnGroupID(userIds []int, groupId uint32) error {
 	user := model.NewUser()
-	return d.engine.Table(user.TableName()).Where("id IN ?", userIds).Updates(map[string]interface{}{"group_id": groupId}).Error
+	return d.engine.Model(&user).Where("id IN (?)", userIds).Updates(map[string]interface{}{"group_id": groupId}).Error
 }
 
 // 更新用户组长字段
