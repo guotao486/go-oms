@@ -32,7 +32,7 @@ func (s *Service) GetUserCountList(param *request.GetListUserRequest) (int, erro
 }
 
 // 获取全部用户
-func (s *Service) GetUserCountListAll() ([]*response.UserResponse, error) {
+func (s *Service) GetUserListAll() ([]*response.UserResponse, error) {
 	user := model.NewUser()
 	return s.dao.GetUserListAll(user)
 }

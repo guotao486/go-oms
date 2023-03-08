@@ -27,6 +27,10 @@ func init() {
 }
 
 func NewUserGroup() *UserGroup {
+	return &UserGroup{}
+}
+
+func NewDefaultUserGroup() *UserGroup {
 	return &UserGroup{
 		State:  enum.DEFAULT_STATE,
 		Leader: enum.DEFAULT,

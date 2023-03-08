@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 11:41:40
- * @LastEditTime: 2023-03-07 10:41:15
+ * @LastEditTime: 2023-03-08 12:58:16
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\dao\user.go
@@ -106,6 +106,21 @@ func (d *Dao) BatchUpdateUserOnGroupID(userIds []int, groupId uint32) error {
 }
 
 // 更新用户组长字段
-func (d *Dao) UpdateUserOnLeader(user *model.User) error {
-	return d.engine.Model(&user).Where("id = ?", user.ID).Updates(map[string]interface{}{"group_id": user.GroupID, "group_leader": user.GroupLeader}).Error
+func (d *Dao) UpdateUserOnLeader(id uint32, groupId uint32) error {
+	user := model.NewUser()
+	return d.engine.Model(&user).Where("id = ?", id).Updates(map[string]interface{}{"group_id": groupId, "group_leader": groupId}).Error
+}
+
+// 根据用户组ID返回用户列表
+func (d *Dao) GetUserListByGroupId(groupID uint32) ([]*model.User, error) {
+	var userList []*model.User
+	err := d.engine.Model(&model.User{}).Select("id,username").Where("group_id = ?", groupID).Find(&userList).Error
+	return userList, err
+}
+
+// 根据用户组ID 返回组长信息
+func (d *Dao) GetUserLeaderByGroupLeader(groupId uint32) (*model.User, error) {
+	user := model.NewUser()
+	err := d.engine.Model(&user).Where("group_leader = ?", groupId).First(&user).Error
+	return user, err
 }

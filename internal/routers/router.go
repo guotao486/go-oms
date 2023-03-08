@@ -97,6 +97,8 @@ func NewRouter() *gin.Engine {
 	userGroupR.GET("/list", userGroupC.List)
 	userGroupR.GET("/create", userGroupC.Create)
 	userGroupR.POST("/create", userGroupC.Create)
+	userGroupR.GET("/update", userGroupC.Update)
+	userGroupR.POST("/update", userGroupC.Update)
 	// userGroup end
 
 	r.GET("/order/index", nil)

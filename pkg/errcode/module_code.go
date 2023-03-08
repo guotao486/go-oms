@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-30 15:28:37
- * @LastEditTime: 2023-01-30 15:33:59
+ * @LastEditTime: 2023-03-08 10:57:16
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\pkg\errcode\module_code.go
@@ -25,6 +25,8 @@ var (
 	ErrorUserExists                = NewError(20020007, "用户名已存在")
 	ErrorUpdateUserGroupIDFail     = NewError(20020008, "设置用户组成员失败")
 	ErrorUpdateUserGroupLeaderFail = NewError(20020009, "设置用户组组长失败")
+	ErrorGetUserGroupUserListFail  = NewError(20020010, "获取用户组成员失败")
+	ErrorGetUserGroupLeaderFail    = NewError(20020011, "获取用户组组长失败")
 
 	ErrorGetUserGroupListFail  = NewError(20030001, "获取用户组列表失败")
 	ErrorCreateUserGroupFail   = NewError(20030002, "新增用户组失败")
