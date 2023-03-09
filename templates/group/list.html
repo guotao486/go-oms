@@ -1,0 +1,132 @@
+{{template "base" .}}
+
+{{define "content"}}
+<div class="layui-main">
+    <div class="search-form">
+        标题：
+        <div class="layui-inline">
+          <input class="layui-input" name="title" id="title" autocomplete="off">
+        </div>
+        用户名：
+        <div class="layui-inline">
+          <input class="layui-input" name="username" id="username" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+    </div>
+    <table class="layui-hide" id="list" lay-filter="list"></table>
+
+    <script type="text/html" id="toolbar">
+        <div class="layui-btn-container">
+          <button class="layui-btn layui-btn-sm" lay-event="reload"><i class="layui-icon layui-icon-refresh-3 layui-font-12"></i></button>
+          <button class="layui-btn layui-btn-sm layui-bg-blue" lay-event="add">新增用户组<i class="layui-icon layui-icon-addition layui-font-12"></i></button>
+        </div>
+    </script>
+    <script type="text/html" id="barAction">
+      <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>  
+</div>
+{{end}}
+{{define "content_script"}}
+<script>
+layui.use(['table', 'dropdown'], function(){
+  var table = layui.table;
+  var dropdown = layui.dropdown;
+  // 创建渲染实例
+  table.render({
+    elem: '#list'
+    ,url:'/group/list' // 此处为静态模拟数据，实际使用时需换成真实接口
+    ,height: 'full-200' // 最大高度减去其他容器已占有的高度差
+    ,cellMinWidth: 80
+    ,defaultToolbar:[]
+    ,page: true
+    ,limit:20
+    ,loading:true
+    ,response: {
+      statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
+    }
+    ,parseData: function(res){ //将原始数据解析成 table 组件所规定的数据
+      return {
+        "code": res.code, //解析接口状态
+        "msg": res.message, //解析提示文本
+        "count": res.data.pager.total_rows, //解析数据长度
+        "data": res.data.list //解析数据列表
+      };
+    }
+    ,cols: [[
+      {type: 'checkbox', fixed: 'left'}
+      ,{field:'id', fixed: 'left', width:80, title: 'ID', sort: true, totalRowText: '合计：'}
+      ,{field:'title', title: '标题',minWidth: 80}
+      ,{field:'members', title: '签名', edit: 'textarea', minWidth: 260, style: '-moz-box-align: start;'}
+      ,{field:'created_on', title:'创建时间', width: 200}
+      ,{fixed: 'right', title:'操作', width: 125, minWidth: 125, toolbar: '#barAction'}
+    ]]
+    ,toolbar: '#toolbar'
+    ,done:function(res){
+    }
+    ,error: function(res, msg){
+      console.log(res, msg)
+    }
+  });
+  // search-form 表单提交搜索
+  var $ = layui.$, active = {
+    reload: function(){
+      //执行重载
+      table.reload('user-list', {
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        ,where: {
+            title: $('#title').val(),
+            username: $('#username').val()
+        }
+      });
+    }
+  };
+  
+  $('.search-form .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+  // search-form 表单提交搜索end
+
+  // 工具栏事件
+  table.on('toolbar(list)', function(obj){
+    var id = obj.config.id;
+    var checkStatus = table.checkStatus(id);
+    var othis = lay(this);
+    switch(obj.event){
+      case 'reload':
+        table.reload('list', {
+            where: {
+                title: $('#title').val(),
+                username: $('#username').val()
+            }
+        });
+      break;
+      case 'add':
+        setTimeout(window.location.href = '/group/create', 500);
+      break;
+    };
+  });
+ 
+  //触发单元格工具事件
+  table.on('tool(list)', function(obj){ // 双击 toolDouble
+    var data = obj.data;
+    switch(obj.event){
+      case 'del':
+        layer.confirm('真的删除么', function(index){
+          ajaxSubmit("/group/delete/"+data.id, {}, "/group/", "DELETE")
+          layer.close(index);
+        });
+      break;
+      case 'edit':
+        setTimeout(window.location.href = '/group/update?id='+data.id, 500);
+      break;
+    };
+
+  });
+});
+</script>
+{{end}}
+

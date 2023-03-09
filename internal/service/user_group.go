@@ -4,6 +4,8 @@ import (
 	"oms/global"
 	"oms/internal/model"
 	"oms/internal/request"
+	"oms/internal/response"
+	"oms/pkg/app"
 	"oms/pkg/errcode"
 
 	"github.com/jinzhu/gorm"
@@ -12,6 +14,30 @@ import (
 // 根据ID 获取用户组详情
 func (s *Service) GetUserGroupById(id uint32) (*model.UserGroup, error) {
 	return s.dao.GetUserGroupById(id)
+}
+
+// 获取用户总数量
+func (s *Service) GetUserGroupCountList(param *request.GetListUserGroupRequest) (int, error) {
+	userGroup := model.NewUserGroup()
+	userGroup.Title = param.Title
+	userGroup.State = param.State
+
+	user := model.NewUser()
+	user.Username = param.Useranme
+	return s.dao.GetUserGroupListCount(userGroup, user)
+}
+
+// 用户组分页列表
+func (s *Service) GetUserGroupListPager(param *request.GetListUserGroupRequest, pager *app.Pager) ([]*response.UserGroupResponse, error) {
+	userGroup := model.NewUserGroup()
+	userGroup.Title = param.Title
+	userGroup.State = param.State
+
+	user := model.NewUser()
+	user.Username = param.Useranme
+
+	pageOffset := app.GetPageOffset(pager.Page, pager.PageSize)
+	return s.dao.GetUserGroupListPage(userGroup, user, pageOffset, pager.PageSize)
 }
 
 // 创建用户组并更新用户数据
@@ -55,6 +81,7 @@ func (s *Service) CreateUserGroup(param *request.CreateUserGroupRequest) error {
 	})
 }
 
+// 编辑用户组
 func (s *Service) UpdateUserGroup(param *request.UpdateUserGroupPostRequest) error {
 	return global.DBEngine.Transaction(func(tx *gorm.DB) error {
 		s.SetDao(tx)
@@ -133,4 +160,14 @@ func (s *Service) UpdateUserGroup(param *request.UpdateUserGroupPostRequest) err
 
 		return nil
 	})
+}
+
+func (s *Service) DeleteUserGroup(param *request.DeleteUserGroupRequest) error {
+	// 检查是否有该用户
+	userGroup, _ := s.dao.GetUserGroupById(param.ID)
+	if userGroup == nil {
+		return errcode.ErrorUserGroupNotFoundFail
+	}
+
+	return s.dao.DeleteUserGroup(userGroup)
 }

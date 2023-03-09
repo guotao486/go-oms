@@ -110,7 +110,7 @@ layui.use(['table', 'dropdown'], function(){
     switch(obj.event){
       case 'del':
         layer.confirm('真的删除么', function(index){
-          ajaxSubmit("/user/delete/"+data.id, {}, "/user/index", "DELETE")
+          ajaxSubmit("/user/delete/"+data.id, {}, "/user/", "DELETE")
           layer.close(index);
         });
       break;

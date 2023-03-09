@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 10:57:20
- * @LastEditTime: 2023-03-06 15:05:59
+ * @LastEditTime: 2023-03-09 16:29:15
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\model\user_group.go

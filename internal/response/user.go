@@ -12,6 +12,7 @@ package response
 import (
 	"encoding/json"
 	"html/template"
+	"oms/internal/model"
 	"oms/pkg/enum"
 	"oms/pkg/util"
 )
@@ -25,6 +26,10 @@ type UserResponse struct {
 	GroupID     uint32 `json:"group_id"`
 	GroupLeader uint8  `json:"group_leader"`
 	CreatedOn   uint32 `json:"created_on"`
+}
+
+func (u *UserResponse) TableName() string {
+	return model.NewUser().TableName()
 }
 
 func (u *UserResponse) CustomMarshal() {
