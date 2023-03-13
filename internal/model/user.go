@@ -36,7 +36,7 @@ func NewDefaultUser() *User {
 }
 
 func (u *User) TableName() string {
-	return "oms_user"
+	return global.DatabaseSetting.TablePrefix + "user"
 }
 
 // 获取并设置salt

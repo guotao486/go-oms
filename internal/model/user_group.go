@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 10:57:20
- * @LastEditTime: 2023-03-09 16:29:15
+ * @LastEditTime: 2023-03-13 16:50:53
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\model\user_group.go
@@ -38,5 +38,5 @@ func NewDefaultUserGroup() *UserGroup {
 }
 
 func (u UserGroup) TableName() string {
-	return "oms_user_group"
+	return global.DatabaseSetting.TablePrefix + "user_group"
 }
