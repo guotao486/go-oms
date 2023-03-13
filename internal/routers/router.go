@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:27
- * @LastEditTime: 2023-03-06 17:29:16
+ * @LastEditTime: 2023-03-13 11:44:53
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\routers\router.go
@@ -42,6 +42,22 @@ func createMyRender() multitemplate.Renderer {
 	return r
 }
 
+type Controller struct {
+	IndexC     *controller.IndexController
+	AuthC      *controller.AuthController
+	UserC      *controller.UserController
+	UserGroupC *controller.UserGroupController
+	OrderC     *controller.OrderController
+}
+
+func NewController() *Controller {
+	return &Controller{
+		UserC:      controller.NewUser(),
+		UserGroupC: controller.NewUserGroup(),
+		OrderC:     controller.NewOrder(),
+	}
+}
+
 func NewRouter() *gin.Engine {
 	r := gin.New()
 	// r.LoadHTMLGlob("templates/**/*") // gin 默认单模板,继承会发生block覆盖
@@ -72,37 +88,43 @@ func NewRouter() *gin.Engine {
 	// 文件上传路由
 	upload := NewUpload()
 	r.POST("upload/file", upload.UploadFile)
+	r.POST("upload/image_file", upload.ImageFiles)
 
-	homeC := controller.NewIndex()
-	r.GET("/home", homeC.Home)
-	authC := controller.NewAuth()
-	r.GET("/login", authC.Login)
+	controller := NewController()
+	r.GET("/home", controller.IndexC.Home)
+	r.GET("/login", controller.AuthC.Login)
 
 	// user module
-	userC := controller.NewUser()
 	userR := r.Group("/user")
-	userR.GET("/", userC.Index)
-	userR.GET("/list", userC.List)
-	userR.GET("/create", userC.Create)
-	userR.POST("/create", userC.Create)
-	userR.GET("/update", userC.Update)
-	userR.POST("/update", userC.Update)
-	userR.DELETE("/delete/:id", userC.Delete)
+	userR.GET("/", controller.UserC.Index)
+	userR.GET("/list", controller.UserC.List)
+	userR.GET("/create", controller.UserC.Create)
+	userR.POST("/create", controller.UserC.Create)
+	userR.GET("/update", controller.UserC.Update)
+	userR.POST("/update", controller.UserC.Update)
+	userR.DELETE("/delete/:id", controller.UserC.Delete)
 	// user module end
 
 	// userGroup module
-	userGroupC := controller.NewUserGroup()
 	userGroupR := r.Group("/group")
-	userGroupR.GET("/", userGroupC.Index)
-	userGroupR.GET("/list", userGroupC.List)
-	userGroupR.GET("/create", userGroupC.Create)
-	userGroupR.POST("/create", userGroupC.Create)
-	userGroupR.GET("/update", userGroupC.Update)
-	userGroupR.POST("/update", userGroupC.Update)
-	userGroupR.DELETE("/delete/:id", userGroupC.Delete)
+	userGroupR.GET("/", controller.UserGroupC.Index)
+	userGroupR.GET("/list", controller.UserGroupC.List)
+	userGroupR.GET("/create", controller.UserGroupC.Create)
+	userGroupR.POST("/create", controller.UserGroupC.Create)
+	userGroupR.GET("/update", controller.UserGroupC.Update)
+	userGroupR.POST("/update", controller.UserGroupC.Update)
+	userGroupR.DELETE("/delete/:id", controller.UserGroupC.Delete)
 	// userGroup end
 
-	r.GET("/order/index", nil)
+	// order
+	orderR := r.Group("/order")
+	orderR.GET("/", controller.OrderC.Index)
+	orderR.GET("/list", controller.OrderC.List)
+	orderR.GET("/create", controller.OrderC.Create)
+	orderR.POST("/create", controller.OrderC.Create)
+	orderR.GET("/update", controller.OrderC.Update)
+	orderR.POST("/update", controller.OrderC.Update)
+
 	// auth 路由
 	// r.POST("/auth", api.GetAuth)
 
