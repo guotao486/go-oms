@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"fmt"
 	"oms/global"
 	"oms/internal/service"
 	"oms/pkg/app"
@@ -56,4 +57,32 @@ func (u Upload) UploadFile(c *gin.Context) {
 	}
 	response.ToResponse(success)
 	return
+}
+
+func (u Upload) ImageFiles(c *gin.Context) {
+	response := app.NewResponse(c)
+	file, err := c.FormFile("file")
+	if err != nil {
+		response.ToErrorResponse(errcode.InvalidParams.WithDetails(err.Error()))
+		return
+	}
+	f, err := file.Open()
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+	}
+	svc := service.New(c)
+	fileInfo, err := svc.UploadFile(upload.FileType(upload.TypeImage), f, file)
+	if err != nil {
+		global.Logger.Errorf(c, "svc.UploadFile err: %v", err)
+		response.ToErrorResponse(errcode.ErrorUploadFileFail.WithDetails(err.Error()))
+		return
+	}
+	success := app.NewSuccess()
+	success.Data = gin.H{
+		"file_name":       fileInfo.Name,
+		"file_access_url": fileInfo.AccessUrl,
+	}
+	response.ToResponse(success)
+	return
+
 }
