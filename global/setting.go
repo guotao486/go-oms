@@ -15,6 +15,7 @@ import (
 
 	"github.com/gin-gonic/gin/binding"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 const (
@@ -23,6 +24,8 @@ const (
 )
 
 var ModelAutoMigrate []interface{}
+
+var ModeInitData []func()
 
 var (
 	ServerSetting   *setting.ServerSettingS

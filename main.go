@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 08:57:23
- * @LastEditTime: 2023-03-06 14:30:18
+ * @LastEditTime: 2023-03-14 10:20:58
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\main.go
@@ -64,16 +64,16 @@ func init() {
 		log.Fatalf("init.setupSetting err: %v", err)
 	}
 
-	// 数据库连接
-	err = setupDBEngine()
-	if err != nil {
-		log.Fatalf("init.setupDBEngine err: %v", err)
-	}
-
 	// 日志
 	err = setupLogger()
 	if err != nil {
 		log.Fatalf("init.setupLogger err: %v", err)
+	}
+
+	// 数据库连接
+	err = setupDBEngine()
+	if err != nil {
+		log.Fatalf("init.setupDBEngine err: %v", err)
 	}
 
 	// 自定义验证器
@@ -239,6 +239,12 @@ func setupDBEngine() error {
 
 	if len(global.ModelAutoMigrate) > 0 {
 		global.DBEngine.AutoMigrate(global.ModelAutoMigrate...)
+	}
+
+	if len(global.ModeInitData) > 0 {
+		for _, f := range global.ModeInitData {
+			f()
+		}
 	}
 	return nil
 }

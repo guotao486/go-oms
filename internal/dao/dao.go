@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-30 14:34:14
- * @LastEditTime: 2023-01-30 14:35:32
+ * @LastEditTime: 2023-03-14 13:29:13
  * @LastEditors: GG
  * @Description: dao 封装数据访问对象
  * @FilePath: \oms\internal\dao\dao.go
