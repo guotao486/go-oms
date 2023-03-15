@@ -31,6 +31,7 @@ type Order struct {
 	PaymentAccount    string  `gorm:"type:varchar(40);not null;comment:'收款账号';index:idx_account" json:"payment_account"`
 	OrderShipping     int32   `gorm:"default:1;not null;comment:'物流方式'" json:"order_shipping"`
 	OrderStatus       int32   `gorm:"default:1;not null;comment:'订单状态'" json:"order_status"`
+	Remarks           string  `gorm:"comment:'备注'" json:"remarks"`
 	OrderItems        []*OrderItem
 }
 

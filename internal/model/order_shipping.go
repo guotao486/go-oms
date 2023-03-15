@@ -10,6 +10,8 @@ type OrderShipping struct {
 	Name string `gorm:"type:varchar(20);not null;comment:'名称'" json:"name"`
 }
 
+var CacheOrderShippingListKey = "cache_order_shipping_list"
+
 func init() {
 	global.ModelAutoMigrate = append(global.ModelAutoMigrate, &OrderShipping{})
 	global.ModeInitData = append(global.ModeInitData, InitDataOrderShipping)

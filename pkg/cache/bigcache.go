@@ -11,7 +11,7 @@ type BigCache struct {
 }
 
 func NewBigCache() *BigCache {
-	cache, _ := bigcache.NewBigCache(bigcache.DefaultConfig(time.Second * 5))
+	cache, _ := bigcache.NewBigCache(bigcache.DefaultConfig(time.Second * 3600))
 	return &BigCache{
 		cache: cache,
 	}

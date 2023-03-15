@@ -85,7 +85,11 @@ func TestCache(t *testing.T) {
 	if err != nil {
 		fmt.Printf("NewCacheStore err: %v\n", err)
 	}
-
+	currency, _ := cacheStore.Engine.Get("currency")
+	fmt.Printf("currency: %v\n", currency)
+	if currency == nil {
+		fmt.Println("currency empty")
+	}
 	cacheStore.Engine.Set("name", []byte("guotao"))
 
 	// set

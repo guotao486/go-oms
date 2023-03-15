@@ -20,6 +20,8 @@ type Currency struct {
 	Rate float32 `gorm:"default:0;not null;comment:'汇率'" json:"rate"`
 }
 
+var CacheCurrencyListKey = "cache_currency_list"
+
 func init() {
 	global.ModelAutoMigrate = append(global.ModelAutoMigrate, &Currency{})
 	global.ModeInitData = append(global.ModeInitData, InitDataCurreny)

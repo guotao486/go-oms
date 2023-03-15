@@ -19,6 +19,8 @@ type PaymentType struct {
 	Name string `gorm:"type:varchar(20);not null;comment:'名称'" json:"name"`
 }
 
+var CachePaymentTypeListKey = "cache_payment_type_list"
+
 func init() {
 	global.ModelAutoMigrate = append(global.ModelAutoMigrate, &PaymentType{})
 	global.ModeInitData = append(global.ModeInitData, InitDataPaymentType)

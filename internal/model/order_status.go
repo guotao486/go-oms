@@ -10,6 +10,8 @@ type OrderStatus struct {
 	Name string `gorm:"type:varchar(20);not null;comment:'名称'" json:"name"`
 }
 
+var CacheOrderStatusListKey = "cache_order_status_list"
+
 func init() {
 	global.ModelAutoMigrate = append(global.ModelAutoMigrate, &OrderStatus{})
 	global.ModeInitData = append(global.ModeInitData, InitDataOrderStatus)
