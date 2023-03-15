@@ -33,6 +33,8 @@ Database: # 数据库配置
   ParseTime: True # time.Time类型自动转换
   MaxIdleConns: 10 # 最大空闲连接数量
   MaxOpenConns: 30 # 最大打开的连接数
+Cache: # 缓存
+  CacheStore: bigCache # 缓存类型
 JWT: # JWT配置
   Secret: shengwang
   Issuer: oms

@@ -10,6 +10,7 @@
 package global
 
 import (
+	"oms/pkg/cache"
 	"oms/pkg/logger"
 	"oms/pkg/setting"
 
@@ -31,8 +32,9 @@ var (
 	ServerSetting   *setting.ServerSettingS
 	AppSetting      *setting.AppSettingS
 	DatabaseSetting *setting.DatabaseSettingS
-
-	DBEngine *gorm.DB
+	CacheSetting    *setting.CacheSettingS
+	CacheStore      *cache.CacheStore
+	DBEngine        *gorm.DB
 
 	Logger *logger.Logger
 

@@ -1,3 +1,12 @@
+/*
+ * @Author: GG
+ * @Date: 2023-02-28 08:57:38
+ * @LastEditTime: 2023-03-14 11:37:28
+ * @LastEditors: GG
+ * @Description:
+ * @FilePath: \oms\internal\service\service.go
+ *
+ */
 package service
 
 import (

@@ -69,6 +69,13 @@ type DatabaseSettingS struct {
 	MaxOpenConns int    // 最大打开的连接数
 }
 
+// CacheSettingS
+//
+// @Description: 缓存
+type CacheSettingS struct {
+	CacheStore string
+}
+
 // JWTSettingS
 //
 // @Description: JWT配置

@@ -1,6 +1,19 @@
+/*
+ * @Author: GG
+ * @Date: 2023-02-28 08:57:36
+ * @LastEditTime: 2023-03-14 17:35:38
+ * @LastEditors: GG
+ * @Description:
+ * @FilePath: \oms\pkg\convert\convert.go
+ *
+ */
 package convert
 
-import "strconv"
+import (
+	"bytes"
+	"encoding/gob"
+	"strconv"
+)
 
 /**
 * @Author $
@@ -34,4 +47,35 @@ func (s StrTo) UInt32() (uint32, error) {
 func (s StrTo) MustUInt32() uint32 {
 	v, _ := s.UInt32()
 	return v
+}
+
+type StructTo struct {
+	V interface{}
+}
+
+// struct 转 []byte
+func (st *StructTo) StructToBytes() ([]byte, error) {
+	buf := new(bytes.Buffer)
+	//gob编码
+	enc := gob.NewEncoder(buf)
+	if err := enc.Encode(st.V); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+type ByteTo struct {
+	V interface{}
+}
+
+// []byte 转 struct
+func (bt *ByteTo) ByteToStruct(b []byte) error {
+	buf := new(bytes.Buffer)
+	buf.Write(b)
+	dec := gob.NewDecoder(buf)
+
+	if err := dec.Decode(bt.V); err != nil {
+		return err
+	}
+	return nil
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 08:57:23
- * @LastEditTime: 2023-03-14 10:20:58
+ * @LastEditTime: 2023-03-14 16:44:35
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\main.go
@@ -18,6 +18,7 @@ import (
 	"oms/global"
 	"oms/internal/model"
 	"oms/internal/routers"
+	"oms/pkg/cache"
 	"oms/pkg/logger"
 	pkg_setting "oms/pkg/setting"
 	"oms/pkg/tracer"
@@ -76,6 +77,11 @@ func init() {
 		log.Fatalf("init.setupDBEngine err: %v", err)
 	}
 
+	// 缓存
+	err = setupCacheStore()
+	if err != nil {
+		log.Fatalf("init.setupCacheStore err: %v", err)
+	}
 	// 自定义验证器
 	err = setupValidator()
 	if err != nil {
@@ -199,6 +205,11 @@ func setupSetting() error {
 		return err
 	}
 
+	err = setting.ReadSection("Cache", &global.CacheSetting)
+	if err != nil {
+		return err
+	}
+
 	// 服务配置读取/写入时间
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriteTimeout *= time.Second
@@ -245,6 +256,15 @@ func setupDBEngine() error {
 		for _, f := range global.ModeInitData {
 			f()
 		}
+	}
+	return nil
+}
+
+func setupCacheStore() error {
+	var err error
+	global.CacheStore, err = cache.NewCacheStore(global.CacheSetting)
+	if err != nil {
+		return err
 	}
 	return nil
 }
