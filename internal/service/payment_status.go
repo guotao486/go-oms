@@ -11,9 +11,6 @@ func (s Service) GetPaymentStatusList() ([]*model.PaymentStatus, error) {
 	var statusList []*model.PaymentStatus
 
 	cacheList, err := cache.Get(model.CachePaymentStatusListKey)
-	if err != nil {
-		return nil, err
-	}
 
 	// 没有缓存则从数据库查询并写入缓存
 	if cacheList == nil {

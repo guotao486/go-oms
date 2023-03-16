@@ -11,9 +11,6 @@ func (s Service) GetCurrencyList() ([]*model.Currency, error) {
 	var currencyList []*model.Currency
 
 	cacheList, err := cache.Get(model.CacheCurrencyListKey)
-	if err != nil {
-		return nil, err
-	}
 
 	// 没有缓存则从数据库查询并写入缓存
 	if cacheList == nil {

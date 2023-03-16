@@ -40,28 +40,31 @@
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">收件人姓名</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="shipping_name" lay-verify="required" lay-reqtext="收件人姓名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
-        </div>
-        <div class="layui-form-item">
             <label class="layui-form-label">收件人电话</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="shipping_telephone" lay-verify="required" lay-reqtext="收件人电话是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">国家</label>
-            <div class="layui-input-inline" style="width: 120px;">
+            <div class="layui-input-inline" >
                 <input type="text" name="shipping_country" lay-verify="required" lay-reqtext="收件人国家是必填项，岂能为空？" placeholder="请输入国家" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">州/省</label>
-            <div class="layui-input-inline" style="width: 120px;">
+            <div class="layui-input-inline" >
                 <input type="text" name="shipping_province" lay-verify="required" lay-reqtext="收件人州/省是必填项，岂能为空？" placeholder="请输入国家" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">城市</label>
-            <div class="layui-input-inline" style="width: 120px;">
+            <div class="layui-input-inline" >
                 <input type="text" name="shipping_city" lay-verify="required" lay-reqtext="收件人城市是必填项，岂能为空？" placeholder="请输入国家" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">邮政编码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="shipping_zipcode" lay-verify="required" lay-reqtext="邮政编码是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -71,41 +74,37 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">邮政编码</label>
-            <div class="layui-input-block">
-                <input type="text" name="shipping_zipcode" lay-verify="required" lay-reqtext="邮政编码是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
             <label class="layui-form-label">付款人姓名</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="billing_name" lay-verify="required" lay-reqtext="付款人姓名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
-        </div>
-        <div class="layui-form-item">
             <label class="layui-form-label">客户邮箱</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="order_email" lay-verify="required|email" lay-reqtext="客户邮箱是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">订单金额</label>
-            <div class="layui-input-block">
-                <input type="text" name="order_amount" lay-verify="required" lay-reqtext="订单金额是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+            <label class="layui-form-label">收款账号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="payment_account"  placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
+
         <div class="layui-form-item">
+            <label class="layui-form-label">订单金额</label>
+            <div class="layui-input-inline">
+                <input type="text" name="order_amount" lay-verify="required" lay-reqtext="订单金额是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
             <label class="layui-form-label">订单货币</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <select name="order_currency" lay-verify="required" lay-reqtext="订单货币是必填项，岂能为空？">
                     <option value="1">USD</option>
                     <option value="2">RMB</option>
                 </select>
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">支付类型</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <select name="payment_type" lay-verify="">
                     <option value="1">未支付</option>
                     <option value="2">支付宝</option>
@@ -116,10 +115,8 @@
                     <option value="7">其它</option>
                 </select>
             </div>
-        </div>
-        <div class="layui-form-item">
             <label class="layui-form-label">支付状态</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <select name="payment_status" lay-verify="">
                     <option value="1">未支付</option>
                     <option value="2">支付成功</option>
@@ -129,22 +126,14 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">收款账号</label>
-            <div class="layui-input-block">
-                <input type="text" name="payment_account"  placeholder="请输入" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
             <label class="layui-form-label">物流方式</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <select name="order_shipping" lay-verify="">
                     <option value="0">DHL</option>
                 </select>
             </div>
-        </div>
-        <div class="layui-form-item">
             <label class="layui-form-label">订单状态</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <select name="order_status" lay-verify="">
                     <option value="1">新创建</option>
                     <option value="2">备货中</option>
@@ -155,7 +144,7 @@
                 </select>
             </div>
         </div>
-        
+
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button type="submit" class="layui-btn" lay-submit lay-filter="form_submit">提交</button>
@@ -174,18 +163,16 @@ layui.use(['form', 'layer', 'upload', 'element'], function(){
         elem: '#addProductList'
         ,elemList: $('#productList') //列表元素对象
         ,url: '/upload/image_file' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
-        ,accept: 'file'
-        ,multiple: true
-        ,number: 3
+        ,accept: 'images'
+        ,multiple: false
         ,auto: true
-        ,size: 120
-        ,choose: function(obj){   
+        ,choose: function(obj){  
         var that = this;
         var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
         //读取本地文件
         obj.preview(function(index, file, result){
             var tr = $(['<tr id="upload-'+ index +'">'
-            ,'<td  class="laytable-cell-space"><img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img product_image_'+index+'"><div class="layui-progress" lay-filter="progress-'+ index +'"><div class="layui-progress-bar" lay-percent=""></div></div><button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button><input type="hidden" name="product['+index+'][image]" id="product-'+index+'-image" lay-verify="required"></td>'
+            ,'<td  class="laytable-cell-space"><img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img product_image_'+index+'"><div class="layui-progress mt-10" lay-filter="progress-'+ index +'"><div class="layui-progress-bar" lay-percent=""></div></div><button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button><input type="hidden" name="product['+index+'][image]" id="product-'+index+'-image" lay-verify="required"></td>'
             ,'<td><input type="text" name="product['+index+'][name]" lay-verify="required" lay-reqtext="商品名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input"></td>'
             ,'<td><input type="text" name="product['+index+'][sku]" lay-verify="required" lay-reqtext="商品sku是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input"></td>'
             ,'<td><input type="text" name="product['+index+'][attribute]" lay-verify="required" lay-reqtext="商品属性是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input"></td>'

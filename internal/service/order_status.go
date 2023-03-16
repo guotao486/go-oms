@@ -1,6 +1,15 @@
 /*
  * @Author: GG
  * @Date: 2023-03-15 16:32:14
+ * @LastEditTime: 2023-03-16 09:39:19
+ * @LastEditors: GG
+ * @Description:
+ * @FilePath: \oms\internal\service\order_status.go
+ *
+ */
+/*
+ * @Author: GG
+ * @Date: 2023-03-15 16:32:14
  * @LastEditTime: 2023-03-15 16:37:17
  * @LastEditors: GG
  * @Description:
@@ -20,9 +29,6 @@ func (s Service) GetOrderStatusList() ([]*model.OrderStatus, error) {
 	var statusList []*model.OrderStatus
 
 	cacheList, err := cache.Get(model.CacheOrderStatusListKey)
-	if err != nil {
-		return nil, err
-	}
 
 	// 没有缓存则从数据库查询并写入缓存
 	if cacheList == nil {

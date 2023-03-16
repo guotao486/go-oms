@@ -1,5 +1,10 @@
+.mt-10 {
+    margin-top:10px
+}
+
 .layui-body .layui-main{
     margin: 15px;
+    padding-bottom: 44px;
 }
 
 .layui-elem-quote-error {

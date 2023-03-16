@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-03-13 14:52:36
- * @LastEditTime: 2023-03-14 14:19:13
+ * @LastEditTime: 2023-03-16 10:59:30
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\model\order.go
@@ -32,7 +32,7 @@ type Order struct {
 	OrderShipping     int32   `gorm:"default:1;not null;comment:'物流方式'" json:"order_shipping"`
 	OrderStatus       int32   `gorm:"default:1;not null;comment:'订单状态'" json:"order_status"`
 	Remarks           string  `gorm:"comment:'备注'" json:"remarks"`
-	OrderItems        []*OrderItem
+	OrderProducts     []*OrderProduct
 }
 
 func init() {

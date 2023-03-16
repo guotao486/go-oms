@@ -20,9 +20,6 @@ func (s Service) GetOrderShippingList() ([]*model.OrderShipping, error) {
 	var shippingList []*model.OrderShipping
 
 	cacheList, err := cache.Get(model.CacheOrderShippingListKey)
-	if err != nil {
-		return nil, err
-	}
 
 	// 没有缓存则从数据库查询并写入缓存
 	if cacheList == nil {
