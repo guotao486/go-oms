@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 21:07:58
- * @LastEditTime: 2023-01-30 17:10:39
+ * @LastEditTime: 2023-03-17 15:16:59
  * @LastEditors: GG
  * @Description: 表单验证相关
  * @FilePath: \oms\pkg\app\form.go
@@ -10,6 +10,7 @@
 package app
 
 import (
+	"reflect"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -87,4 +88,20 @@ func BindAndValid(c *gin.Context, v interface{}) (bool, ValidErrors) {
 		return false, errs
 	}
 	return true, nil
+}
+
+func StructAssign(binding interface{}, value interface{}) {
+	bVal := reflect.ValueOf(binding).Elem() // 获取reflect.Type类型
+	vVal := reflect.ValueOf(value).Elem()   // 获取reflect.Type类型
+	vTypeOfT := vVal.Type()
+	for i := 0; i < vVal.NumField(); i++ {
+		// 相同属性的字段，有则修改其值
+		name := vTypeOfT.Field(i).Name
+		// 同类型
+		valType := vTypeOfT.Field(i).Type
+
+		if ok := bVal.FieldByName(name).IsValid() && bVal.FieldByName(name).Type() == valType; ok {
+			bVal.FieldByName(name).Set(reflect.ValueOf(vVal.Field(i).Interface()))
+		}
+	}
 }

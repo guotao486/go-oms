@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-30 15:28:37
- * @LastEditTime: 2023-03-08 10:57:16
+ * @LastEditTime: 2023-03-17 16:13:02
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\pkg\errcode\module_code.go
@@ -15,6 +15,8 @@ var (
 	ErrorUpdateTagFail  = NewError(20010003, "更新标签失败")
 	ErrorDeleteTagFail  = NewError(20010004, "删除标签失败")
 	ErrorCountTagFail   = NewError(20010005, "统计标签失败")
+
+	ErrorUploadFileFail = NewError(20100001, "上传文件失败")
 
 	ErrorGetUserListFail           = NewError(20020001, "获取用户列表失败")
 	ErrorCreateUserFail            = NewError(20020002, "新增用户失败")
@@ -36,5 +38,11 @@ var (
 	ErrorUserGroupNotFoundFail = NewError(20030006, "用户组不存在")
 	ErrorUserGroupExistsFail   = NewError(20030007, "用户组已存在")
 
-	ErrorUploadFileFail = NewError(20100001, "上传文件失败")
+	ErrorGetOrderListFail  = NewError(20040001, "获取订单列表失败")
+	ErrorCreateOrderFail   = NewError(20040002, "新增订单失败")
+	ErrorUpdateOrderFail   = NewError(20040003, "更新订单失败")
+	ErrorDeleteOrderFail   = NewError(20040004, "删除订单失败")
+	ErrorCountOrderFail    = NewError(20040005, "统计订单失败")
+	ErrorOrderNotFoundFail = NewError(20040006, "订单不存在")
+	ErrorOrderExistsFail   = NewError(20040007, "订单已存在")
 )
