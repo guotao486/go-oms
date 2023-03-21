@@ -1,10 +1,10 @@
 /*
  * @Author: GG
  * @Date: 2023-03-18 16:13:54
- * @LastEditTime: 2023-03-18 19:15:30
+ * @LastEditTime: 2023-03-21 11:47:41
  * @LastEditors: GG
  * @Description:
- * @FilePath: \go-oms\test\form_test.go
+ * @FilePath: \oms\test\form_test.go
  *
  */
 package test
@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"oms/internal/request"
+	"oms/pkg/app"
 	"reflect"
 	"strings"
 	"testing"
@@ -26,7 +27,7 @@ func DeepCopyByJson(src, dst interface{}) error {
 		return err
 	}
 }
-func getPostMapForm(formData map[string][]string, fieldName string) (map[string]interface{}, int, int) {
+func getPostMapForm(formData map[string][]string, fieldName string) (map[string]interface{}, int) {
 	var key string
 	var i, j int
 	dicts := make(map[string]interface{})
@@ -41,7 +42,7 @@ func getPostMapForm(formData map[string][]string, fieldName string) (map[string]
 		}
 	}
 
-	return dicts, i, j
+	return dicts, i
 }
 
 func getPostMapFormItem(formData map[string][]string, i, j int, fieldName string, entity interface{}) {
@@ -73,26 +74,22 @@ func getPostMapFormItem(formData map[string][]string, i, j int, fieldName string
 // go test -v -run TestGetPostMapForm .\test\form_test.go
 func TestGetPostMapForm(t *testing.T) {
 	data := make(map[string][]string)
-	data["product[1][name]"] = []string{"product_name"}
-	data["product[1][sku]"] = []string{"product_sku"}
-	data["product[1][image]"] = []string{"product_image"}
-	data["product[1][attribute]"] = []string{"product_attribute"}
-	data["product[2][name]"] = []string{"product_name2"}
-	data["product[2][sku]"] = []string{"product_sku2"}
-	data["product[2][image]"] = []string{"product_image2"}
-	data["product[2][attribute]"] = []string{"product_attribute2"}
-	data["product[3][name]"] = []string{"product_name3"}
-	data["product[3][sku]"] = []string{"product_sku3"}
-	data["product[3][image]"] = []string{"product_image3"}
-	data["product[3][attribute]"] = []string{"product_attribute3"}
+	data["product[1][name]"] = []string{"oms_222"}
+	data["product[1679368693300-0][sku]"] = []string{"oms_111"}
+	data["product[1679368693300-0][image]"] = []string{"9abcfe885065270eb7f6791574aad63f.png"}
+	data["product[1679368693300-0][name]"] = []string{"oms_111"}
+	data["product[1679368693300-0][attribute]"] = []string{"oms_111"}
+	data["product[1][image]"] = []string{"f5d805ec3ad3e8c0cf099d91c3ec83e1.png"}
+	data["product[1][sku]"] = []string{"oms_222"}
+	data["product[1][attribute]"] = []string{"oms_222"}
 
-	p, i, j := getPostMapForm(data, "product")
+	p := app.GetPostMapForm(data, "product")
 	fmt.Printf("p: %v\n", p)
 
-	for k, _ := range p {
+	for k, v := range p {
 		Product := &request.CreateOrderProductRequest{}
-		getPostMapFormItem(data, i, j, k, Product)
-		p[k] = Product
+		app.GetPostMapFormItem(data, v["i"], v["j"], "product", k, Product)
+		fmt.Printf("Product: %v\n", Product)
 	}
 	for k, v := range p {
 		fmt.Printf("k: %v\n", k)

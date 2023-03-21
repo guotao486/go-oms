@@ -26,3 +26,6 @@ func init() {
 func (o *OrderProduct) TableName() string {
 	return global.DatabaseSetting.TablePrefix + "order_product"
 }
+func NewOrderProduct() *OrderProduct {
+	return &OrderProduct{}
+}

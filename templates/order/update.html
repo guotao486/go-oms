@@ -3,14 +3,15 @@
 {{define "content"}}
 <div class="layui-main">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>新增订单</legend>
+        <legend>修改订单</legend>
     </fieldset>
     {{template "message" .}}
     <form class="layui-form">
         <div class="layui-form-item">
             <label class="layui-form-label">订单号</label>
             <div class="layui-input-block">
-                <input type="text" name="order_no" lay-verify="required|min:6" lay-reqtext="订单号是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="hidden" name="id" lay-verify="required"  placeholder="请输入" autocomplete="off" class="layui-input" value="{{.data.orderInfo.ID}}">
+                <input type="text" name="order_no" lay-verify="required|min:6" lay-reqtext="订单号是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="{{.data.orderInfo.OrderNo}}">
             </div>
         </div>
         <div class="layui-form-item">
@@ -34,6 +35,17 @@
                         <th>操作</th>
                     </tr></thead>
                     <tbody id="productList"></tbody>
+                    {{range $p:= .data.orderInfo.OrderProducts}}
+                    <tr id="upload-{{$p.ID}}">
+                        <td  class="laytable-cell-space"><img src="{{$p.Images | getImagesUrl}}" alt="file.name" class="layui-upload-img product_image_{{$p.ID}}"><button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button><input type="hidden" name="product[{{$p.ID}}][image]" id="product-{{$p.ID}}-image" lay-verify="required" value="{{$p.Images}}"></td>
+                        <td><input type="text" name="product[{{$p.ID}}][name]" lay-verify="required" lay-reqtext="商品名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="{{$p.Name}}"></td>
+                        <td><input type="text" name="product[{{$p.ID}}][sku]" lay-verify="required" lay-reqtext="商品sku是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="{{$p.Sku}}"></td>
+                        <td><input type="text" name="product[{{$p.ID}}][attribute]" lay-verify="required" lay-reqtext="商品属性是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="{{$p.Attribute}}"></td>
+                        <td>
+                        <button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>
+                        </td>
+                        </tr>
+                    {{end}}
                     </table>
                 </div>
             </div> 
@@ -41,63 +53,63 @@
         <div class="layui-form-item">
             <label class="layui-form-label">收件人姓名</label>
             <div class="layui-input-inline">
-                <input type="text" name="shipping_name" lay-verify="required" lay-reqtext="收件人姓名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="text" name="shipping_name" value="{{.data.orderInfo.ShippingName}}" lay-verify="required" lay-reqtext="收件人姓名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">收件人电话</label>
             <div class="layui-input-inline">
-                <input type="text" name="shipping_telephone" lay-verify="required" lay-reqtext="收件人电话是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="text" name="shipping_telephone" value="{{.data.orderInfo.ShippingTelephone}}" lay-verify="required" lay-reqtext="收件人电话是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">国家</label>
             <div class="layui-input-inline" >
-                <input type="text" name="shipping_country" lay-verify="required" lay-reqtext="收件人国家是必填项，岂能为空？" placeholder="请输入国家" autocomplete="off" class="layui-input">
+                <input type="text" name="shipping_country" value="{{.data.orderInfo.ShippingCountry}}" lay-verify="required" lay-reqtext="收件人国家是必填项，岂能为空？" placeholder="请输入国家" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">州/省</label>
             <div class="layui-input-inline" >
-                <input type="text" name="shipping_province" lay-verify="required" lay-reqtext="收件人州/省是必填项，岂能为空？" placeholder="请输入国家" autocomplete="off" class="layui-input">
+                <input type="text" name="shipping_province" value="{{.data.orderInfo.ShippingProvince}}" lay-verify="required" lay-reqtext="收件人州/省是必填项，岂能为空？" placeholder="请输入国家" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">城市</label>
             <div class="layui-input-inline" >
-                <input type="text" name="shipping_city" lay-verify="required" lay-reqtext="收件人城市是必填项，岂能为空？" placeholder="请输入国家" autocomplete="off" class="layui-input">
+                <input type="text" name="shipping_city" value="{{.data.orderInfo.ShippingCity}}" lay-verify="required" lay-reqtext="收件人城市是必填项，岂能为空？" placeholder="请输入国家" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">邮政编码</label>
             <div class="layui-input-inline">
-                <input type="text" name="shipping_zipcode" lay-verify="required" lay-reqtext="邮政编码是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="text" name="shipping_zipcode" value="{{.data.orderInfo.ShippingZipcode}}" lay-verify="required" lay-reqtext="邮政编码是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">收件人地址</label>
             <div class="layui-input-block">
-                <input type="text" name="shipping_address" lay-verify="required" lay-reqtext="收件人地址是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="text" name="shipping_address" value="{{.data.orderInfo.ShippingAddress}}" lay-verify="required" lay-reqtext="收件人地址是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">付款人姓名</label>
             <div class="layui-input-inline">
-                <input type="text" name="billing_name" lay-verify="required" lay-reqtext="付款人姓名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="text" name="billing_name" value="{{.data.orderInfo.BillingName}}" lay-verify="required" lay-reqtext="付款人姓名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">客户邮箱</label>
             <div class="layui-input-inline">
-                <input type="text" name="order_email" lay-verify="required|email" lay-reqtext="客户邮箱是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="text" name="order_email" value="{{.data.orderInfo.OrderEmail}}" lay-verify="required|email" lay-reqtext="客户邮箱是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">收款账号</label>
             <div class="layui-input-inline">
-                <input type="text" name="payment_account"  placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="text" name="payment_account" value="{{.data.orderInfo.PaymentAccount}}" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">订单金额</label>
             <div class="layui-input-inline">
-                <input type="text" name="order_amount" lay-verify="required" lay-reqtext="订单金额是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="text" name="order_amount" value="{{.data.orderInfo.OrderAmount}}" lay-verify="required" lay-reqtext="订单金额是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">订单货币</label>
             <div class="layui-input-inline">
                 <select name="order_currency" lay-verify="required" lay-reqtext="订单货币是必填项，岂能为空？">
                     {{range $c := .data.currency}}
-                    <option value="{{$c.ID}}">{{$c.Name}}</option>
+                    <option value="{{$c.ID}}" {{if eq $c.ID $.data.orderInfo.OrderCurrency}}checked="" {{end}}>{{$c.Name}}</option>
                     {{end}}
                 </select>
             </div>
@@ -108,7 +120,7 @@
             <div class="layui-input-inline">
                 <select name="payment_type" lay-verify="">
                     {{range $pt := .data.paymentType}}
-                    <option value="{{$pt.ID}}">{{$pt.Name}}</option>
+                    <option value="{{$pt.ID}}" {{if eq $pt.ID $.data.orderInfo.PaymentType}}checked="" {{end}}>{{$pt.Name}}</option>
                     {{end}}
                 </select>
             </div>
@@ -116,7 +128,7 @@
             <div class="layui-input-inline">
                 <select name="payment_status" lay-verify="">
                     {{range $ps := .data.paymentStatus}}
-                    <option value="{{$ps.ID}}">{{$ps.Name}}</option>
+                    <option value="{{$ps.ID}}" {{if eq $ps.ID $.data.orderInfo.PaymentStatus}}checked="" {{end}}>{{$ps.Name}}</option>
                     {{end}}
                 </select>
             </div>
@@ -126,7 +138,7 @@
             <div class="layui-input-inline">
                 <select name="order_shipping" lay-verify="">
                     {{range $os := .data.orderShipping}}
-                    <option value="{{$os.ID}}">{{$os.Name}}</option>
+                    <option value="{{$os.ID}}" {{if eq $os.ID $.data.orderInfo.OrderShipping}}checked="" {{end}}>{{$os.Name}}</option>
                     {{end}}
                 </select>
             </div>
@@ -134,7 +146,7 @@
             <div class="layui-input-inline">
                 <select name="order_status" lay-verify="">
                     {{range $os := .data.orderStatus}}
-                    <option value="{{$os.ID}}">{{$os.Name}}</option>
+                    <option value="{{$os.ID}}" {{if eq $os.ID $.data.orderInfo.OrderStatus}}checked="" {{end}}>{{$os.Name}}</option>
                     {{end}}
                 </select>
             </div>
@@ -223,7 +235,7 @@ layui.use(['form', 'layer', 'upload', 'element'], function(){
         formData = $('.layui-form').serialize()
         var btn = $(this);
         btn.text("提交中...").attr("disabled", "disabled").addClass("layui-disabled");
-        ajaxSubmit("/order/create",formData, "/order/", "POST", btn)
+        ajaxSubmit("/order/update",formData, "/order/", "POST", btn)
         return false;
     });
 })

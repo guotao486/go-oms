@@ -63,6 +63,7 @@ func NewRouter() *gin.Engine {
 	// r.LoadHTMLGlob("templates/**/*") // gin 默认单模板,继承会发生block覆盖
 	// r.HTMLRender = createMyRender() //
 	r.HTMLRender = app.LoadTemplateFiles()
+
 	r.Static("/assets", "./assets")
 	if global.ServerSetting.RunMode == "debug" {
 		// 默认

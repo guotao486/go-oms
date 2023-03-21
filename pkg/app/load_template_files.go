@@ -1,6 +1,7 @@
 package app
 
 import (
+	"html/template"
 	"io/ioutil"
 	"oms/global"
 	"os"
@@ -67,7 +68,21 @@ func LoadTemplateFiles() multitemplate.Renderer {
 	}
 	// 模块模板处理
 	for _, f := range moduleFiles {
-		r.AddFromFiles(f[len(templateDir)+1:len(f)-len(stuffix)], append(layoutFiles, f)...)
+		r.AddFromFilesFuncs(f[len(templateDir)+1:len(f)-len(stuffix)], LoadFuncs(), append(layoutFiles, f)...)
 	}
+
 	return r
+}
+
+// 加载自定义函数
+func LoadFuncs() template.FuncMap {
+	return template.FuncMap{
+		"getImagesUrl": GetImagesUrl,
+	}
+}
+
+func GetImagesUrl(images string) string {
+	images = global.AppSetting.UploadServerUrl + "/" + images
+
+	return images
 }

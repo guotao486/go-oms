@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 21:07:58
- * @LastEditTime: 2023-03-17 15:16:59
+ * @LastEditTime: 2023-03-21 17:33:05
  * @LastEditors: GG
  * @Description: 表单验证相关
  * @FilePath: \oms\pkg\app\form.go
@@ -10,6 +10,7 @@
 package app
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 
@@ -90,6 +91,7 @@ func BindAndValid(c *gin.Context, v interface{}) (bool, ValidErrors) {
 	return true, nil
 }
 
+// 2个struct的同名字段赋值
 func StructAssign(binding interface{}, value interface{}) {
 	bVal := reflect.ValueOf(binding).Elem() // 获取reflect.Type类型
 	vVal := reflect.ValueOf(value).Elem()   // 获取reflect.Type类型
@@ -102,6 +104,97 @@ func StructAssign(binding interface{}, value interface{}) {
 
 		if ok := bVal.FieldByName(name).IsValid() && bVal.FieldByName(name).Type() == valType; ok {
 			bVal.FieldByName(name).Set(reflect.ValueOf(vVal.Field(i).Interface()))
+		}
+	}
+}
+
+// 获取二维数组类型的post数据
+// p := app.GetPostMapForm(data, "product")
+// fmt.Printf("p: %v\n", p)
+// for k, v := range p {
+// 	Product := &request.CreateOrderProductRequest{}
+// 	app.GetPostMapFormItem(data, v["i"], v["j"], k, Product)
+//
+// }
+// for k, v := range p {
+// 	fmt.Printf("k: %v\n", k)
+// 	fmt.Printf("v: %v\n", v)
+// }
+//
+// k: 3
+// v: map[i:7 j:13]
+
+func GetPostMapForm(formData map[string][]string, fieldName string) map[string]map[string]int {
+	var key string
+	var i, j int
+	dicts := make(map[string]map[string]int)
+	for k, _ := range formData {
+		if i = strings.IndexByte(k, '['); i >= 1 && k[0:i] == fieldName {
+			if j = strings.IndexByte(k[i+1:], ']'); j >= 1 {
+				key = k[i+1:][:j]
+				if dicts[key] == nil {
+					dicts[key] = make(map[string]int)
+					dicts[key]["i"] = i
+					dicts[key]["j"] = j
+				}
+			}
+		}
+	}
+
+	return dicts
+}
+
+func GetPostMapFormItem(formData map[string][]string, pi, pj int, parentName, fieldName string, entity interface{}) {
+	var key string
+	var i, j, i2, j2 int
+	fmt.Printf("parentName: %v\n", parentName)
+	fmt.Printf("fieldName: %v\n", fieldName)
+	for k, v := range formData {
+		if len(k) >= pi && k[0:pi] == parentName {
+			fmt.Printf("k: %v\n", k)
+			if pj > strings.IndexByte(k[pi+1:], ']') {
+				continue
+			}
+			fmt.Printf("k[pi:]: %v\n", k[pi:])
+			fmt.Printf("strings.IndexByte(k[pi:]): %v\n", strings.IndexByte(k[pi:], '['))
+			if i = strings.IndexByte(k[pi:], '['); i >= 1 {
+				continue
+			}
+			fmt.Printf("strings.IndexByte(k[pi:], ']'): %v\n", strings.IndexByte(k[pi:], ']'))
+			if j = strings.IndexByte(k[pi:], ']'); j < 1 {
+				continue
+			}
+			fmt.Printf("k[pi:][i:j]: %v\n", k[pi:][i+1:j])
+			if k[pi:][i+1:j] != fieldName {
+				continue
+			}
+			fmt.Printf("k[pi:][j:]: %v\n", k[pi:][j+1:])
+			fmt.Printf("strings.IndexByte(k[pi:][j:], '['): %v\n", strings.IndexByte(k[pi:][j+1:], '['))
+			if i2 = strings.IndexByte(k[pi:][j+1:], '['); i2 < 0 {
+				continue
+			}
+
+			fmt.Printf("strings.IndexByte(k[pi:][j:], ']'): %v\n", strings.IndexByte(k[pi:][j+1:], ']'))
+			if j2 = strings.IndexByte(k[pi:][j+1:], ']'); j2 < 1 {
+				continue
+			}
+
+			key = k[pi:][j+1:][i2+1 : j2]
+			fmt.Printf("key: %v\n", key)
+
+			refEntityV := reflect.ValueOf(entity).Elem()
+			if refEntityV.FieldByName(key).IsValid() {
+				refEntityV.FieldByName(key).Set(reflect.ValueOf(v[0]))
+				continue
+			}
+			for i := 0; i < refEntityV.NumField(); i++ {
+				field := refEntityV.Type().Field(i)
+				if field.Tag.Get("form") == key {
+					refEntityV.Field(i).Set(reflect.ValueOf(v[0]))
+					break
+				}
+			}
+
 		}
 	}
 }
