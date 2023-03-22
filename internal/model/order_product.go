@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-03-13 16:41:02
- * @LastEditTime: 2023-03-16 10:57:24
+ * @LastEditTime: 2023-03-22 16:33:38
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\model\order_product.go
@@ -13,7 +13,7 @@ import "oms/global"
 
 type OrderProduct struct {
 	*Model
-	OrderID   uint32 `gorm:"not null;comment:'订单ID'" json:"order_id"`
+	OrderID   uint32 `gorm:"default:0;comment:'订单ID'" json:"order_id"`
 	Name      string `gorm:"type:varchar(50);not null;comment:'商品名称'" json:"name"`
 	Sku       string `gorm:"type:varchar(50);not null;comment:'sku'" json:"sku"`
 	Attribute string `gorm:"type:varchar(255);comment:'商品属性'" json:"attribute"`

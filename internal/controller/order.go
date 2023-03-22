@@ -7,6 +7,7 @@ import (
 	"oms/internal/request"
 	"oms/internal/service"
 	"oms/pkg/app"
+	"oms/pkg/convert"
 	"oms/pkg/errcode"
 
 	"github.com/gin-gonic/gin"
@@ -25,7 +26,38 @@ func (o *OrderController) Index(c *gin.Context) {
 }
 
 func (o *OrderController) List(c *gin.Context) {
+	if c.Request.Method == http.MethodGet {
+		param := request.GetOrderListRequest{}
+		response := app.NewResponse(c)
+		valid, errs := app.BindAndValid(c, &param)
+		if !valid {
+			global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
+			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+			response.ToErrorResponse(errRsp)
+			return
+		}
 
+		svc := service.New(c.Request.Context())
+		pager := app.Pager{Page: app.GetPage(c), PageSize: app.GetPageSize(c)}
+		totalRows, err := svc.GetOrderCountList(&param)
+		if err != nil {
+			// 统计错误
+			global.Logger.Errorf(c, "svc.GetOrderCountList err: %v", err)
+			response.ToErrorResponse(errcode.ErrorCountOrderFail)
+			return
+		}
+
+		orders, err := svc.GetOrderListPager(&param, &pager)
+		if err != nil {
+			// 分页查询错误
+			global.Logger.Errorf(c, "svc.GetOrderListPager err: %v", err)
+			response.ToErrorResponse(errcode.ErrorGetOrderListFail)
+			return
+		}
+
+		response.ToResponseList(orders, totalRows)
+		return
+	}
 }
 
 func (o *OrderController) Create(c *gin.Context) {
@@ -180,5 +212,30 @@ func (o *OrderController) Update(c *gin.Context) {
 	}
 }
 func (o *OrderController) Delete(c *gin.Context) {
+	if c.Request.Method == http.MethodDelete {
+		param := request.DeleteOrderRequest{ID: convert.StrTo(c.Param("id")).MustUInt32()}
+		response := app.NewResponse(c)
+		valid, errs := app.BindAndValid(c, &param)
+		if !valid {
+			global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
+			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+			response.ToErrorResponse(errRsp)
+			return
+		}
 
+		svc := service.New(c.Request.Context())
+		err := svc.DeleteOrder(&param)
+		if err != nil {
+			global.Logger.Errorf(c, "svc.DeleteUser err: %v", err)
+			switch e := err.(type) {
+			case *errcode.Error:
+				response.ToErrorResponse(e)
+			default:
+				response.ToErrorResponse(errcode.ErrorDeleteUserFail)
+			}
+			return
+		}
+		response.ToSuccessResponse(nil)
+		return
+	}
 }

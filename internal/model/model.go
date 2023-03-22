@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:27
- * @LastEditTime: 2023-03-14 13:32:37
+ * @LastEditTime: 2023-03-22 15:53:05
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\model\model.go
@@ -150,7 +150,7 @@ func deleteCallback(scope *gorm.Scope) {
 			extraOption = fmt.Sprint(str)
 		}
 		deletedOnField, hasDeleteOnField := scope.FieldByName("DeletedOn")
-		isDelField, hasIsDelField := scope.FieldByName("isDel")
+		isDelField, hasIsDelField := scope.FieldByName("IsDel")
 		if !scope.Search.Unscoped && hasDeleteOnField && hasIsDelField {
 			now := time.Now().Unix()
 			scope.Raw(fmt.Sprintf(

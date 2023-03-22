@@ -125,6 +125,7 @@ func NewRouter() *gin.Engine {
 	orderR.POST("/create", controller.OrderC.Create)
 	orderR.GET("/update", controller.OrderC.Update)
 	orderR.POST("/update", controller.OrderC.Update)
+	orderR.DELETE("/delete/:id", controller.OrderC.Delete)
 
 	// auth 路由
 	// r.POST("/auth", api.GetAuth)

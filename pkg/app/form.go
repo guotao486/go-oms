@@ -10,7 +10,6 @@
 package app
 
 import (
-	"fmt"
 	"reflect"
 	"strings"
 
@@ -147,40 +146,29 @@ func GetPostMapForm(formData map[string][]string, fieldName string) map[string]m
 func GetPostMapFormItem(formData map[string][]string, pi, pj int, parentName, fieldName string, entity interface{}) {
 	var key string
 	var i, j, i2, j2 int
-	fmt.Printf("parentName: %v\n", parentName)
-	fmt.Printf("fieldName: %v\n", fieldName)
 	for k, v := range formData {
 		if len(k) >= pi && k[0:pi] == parentName {
-			fmt.Printf("k: %v\n", k)
 			if pj > strings.IndexByte(k[pi+1:], ']') {
 				continue
 			}
-			fmt.Printf("k[pi:]: %v\n", k[pi:])
-			fmt.Printf("strings.IndexByte(k[pi:]): %v\n", strings.IndexByte(k[pi:], '['))
 			if i = strings.IndexByte(k[pi:], '['); i >= 1 {
 				continue
 			}
-			fmt.Printf("strings.IndexByte(k[pi:], ']'): %v\n", strings.IndexByte(k[pi:], ']'))
 			if j = strings.IndexByte(k[pi:], ']'); j < 1 {
 				continue
 			}
-			fmt.Printf("k[pi:][i:j]: %v\n", k[pi:][i+1:j])
 			if k[pi:][i+1:j] != fieldName {
 				continue
 			}
-			fmt.Printf("k[pi:][j:]: %v\n", k[pi:][j+1:])
-			fmt.Printf("strings.IndexByte(k[pi:][j:], '['): %v\n", strings.IndexByte(k[pi:][j+1:], '['))
 			if i2 = strings.IndexByte(k[pi:][j+1:], '['); i2 < 0 {
 				continue
 			}
 
-			fmt.Printf("strings.IndexByte(k[pi:][j:], ']'): %v\n", strings.IndexByte(k[pi:][j+1:], ']'))
 			if j2 = strings.IndexByte(k[pi:][j+1:], ']'); j2 < 1 {
 				continue
 			}
 
 			key = k[pi:][j+1:][i2+1 : j2]
-			fmt.Printf("key: %v\n", key)
 
 			refEntityV := reflect.ValueOf(entity).Elem()
 			if refEntityV.FieldByName(key).IsValid() {

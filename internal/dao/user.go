@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 11:41:40
- * @LastEditTime: 2023-03-08 12:58:16
+ * @LastEditTime: 2023-03-22 11:14:37
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\dao\user.go
@@ -24,7 +24,7 @@ func (d *Dao) GetUserListCount(user *model.User) (int, error) {
 	}
 
 	db = db.Where("state = ?", user.State)
-	if err := db.Where("is_del = ?", 0).Count(&count).Error; err != nil {
+	if err := db.Where("is_del = ?", enum.IS_DEL_UNABLE).Count(&count).Error; err != nil {
 		return 0, err
 	}
 	return count, nil
