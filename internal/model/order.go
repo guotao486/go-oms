@@ -24,10 +24,10 @@ type Order struct {
 	ShippingZipcode   string  `gorm:"type:varchar(10);not null;comment:'收件人邮政编码'" json:"shipping_zipcode"`
 	BillingName       string  `gorm:"type:varchar(50);not null;comment:'付款人姓名';index:idx_name" json:"billing_name"`
 	OrderEmail        string  `gorm:"type:varchar(30);not null;comment:'客户邮箱';index:idx_email" json:"order_email"`
-	OrderAmount       float32 `gorm:"not null;comment:'订单金额'" json:"order_amount"`
-	DiscountAmount    float32 `gorm:"default:0;comment:'折扣金额'" json:"discount_amount"`
-	ShippingAmount    float32 `gorm:"default:0;comment:'运费'" json:"shipping_amount"`
-	CouponAmount      float32 `gorm:"default:0;comment:'优惠券'" json:"coupon_amount"`
+	OrderAmount       float32 `gorm:"type:double(10,2);not null;comment:'订单金额'" json:"order_amount"`
+	DiscountAmount    float32 `gorm:"type:double(10,2);default:0;comment:'折扣金额'" json:"discount_amount"`
+	ShippingAmount    float32 `gorm:"type:double(10,2);default:0;comment:'运费'" json:"shipping_amount"`
+	CouponAmount      float32 `gorm:"type:double(10,2);default:0;comment:'优惠券'" json:"coupon_amount"`
 	OrderCurrency     int32   `gorm:"default:1;not null;comment:'订单货币'" json:"order_currency"`
 	PaymentType       int32   `gorm:"default:1;not null;comment:'支付类型'" json:"payment_type"`
 	PaymentStatus     int32   `gorm:"default:1;not null;comment:'支付状态'" json:"payment_status"`

@@ -24,3 +24,31 @@
     position: absolute;
     right: 10px;
 }
+
+.product-list{
+    display: flex;
+    flex-direction: column;
+}
+.product-item {
+    margin: 10px 0;
+}
+.product-info{
+    display: flex;
+}
+
+.product-images{
+    width: 60px;
+    height: 60px;
+}
+
+.product-images img {
+    height: 100%;
+    width: 100%;
+}
+
+.product-detail {
+    display: flex;
+    flex-direction: column;
+    line-height: 20px;
+    margin-left: 10px;
+}

@@ -1,6 +1,19 @@
+/*
+ * @Author: GG
+ * @Date: 2023-03-13 16:32:06
+ * @LastEditTime: 2023-03-23 09:28:03
+ * @LastEditors: GG
+ * @Description:
+ * @FilePath: \oms\internal\response\order.go
+ *
+ */
 package response
 
-import "oms/internal/model"
+import (
+	"encoding/json"
+	"oms/internal/model"
+	"oms/pkg/util"
+)
 
 type OrderResponse struct {
 	ID                uint32                `json:"id"`
@@ -30,10 +43,21 @@ type OrderResponse struct {
 	OrderShippingInfo *model.OrderShipping  `gorm:"foreignKey:OrderShipping" json:"order_shipping_info"`
 	OrderStatus       int32                 `json:"-"`
 	OrderStatusInfo   *model.OrderStatus    `gorm:"foreignKey:OrderStatus" json:"order_status_info"`
-	OrderProducts     []*model.OrderProduct `json:"order_products"`
+	OrderProducts     []*model.OrderProduct `gorm:"foreignKey:OrderID" json:"order_products"`
 	CreatedOn         uint32                `json:"created_on"`
 }
 
 func (o *OrderResponse) TableName() string {
 	return model.NewOrder().TableName()
+}
+
+func (o *OrderResponse) MarshalJSON() ([]byte, error) {
+	type Alias OrderResponse
+	return json.Marshal(&struct {
+		CreatedOn string `json:"created_on"`
+		*Alias
+	}{
+		CreatedOn: util.UnixToString(int64(o.CreatedOn)),
+		Alias:     (*Alias)(o),
+	})
 }

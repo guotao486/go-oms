@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-03-17 14:22:12
- * @LastEditTime: 2023-03-22 17:26:58
+ * @LastEditTime: 2023-03-23 09:23:22
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\service\order.go
@@ -10,7 +10,6 @@
 package service
 
 import (
-	"fmt"
 	"oms/global"
 	"oms/internal/model"
 	"oms/internal/request"
@@ -75,8 +74,6 @@ func (s Service) UpdateOrder(param *request.UpdateOrderPostRequest) error {
 			return errcode.ErrorOrderNotFoundFail
 		}
 		app.StructAssign(order, param)
-		fmt.Printf("param.CouponAmount: %v\n", param.CouponAmount)
-		fmt.Printf("1 order.CouponAmount: %v\n", order.CouponAmount)
 
 		err = s.dao.UpdateOrder(order)
 		if err != nil {
@@ -90,7 +87,6 @@ func (s Service) UpdateOrder(param *request.UpdateOrderPostRequest) error {
 			products = append(products, product)
 		}
 		order.OrderProducts = products
-		fmt.Printf("2 order.CouponAmount: %v\n", order.CouponAmount)
 		return s.dao.UpdateOrderProducts(order)
 	})
 }

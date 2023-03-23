@@ -3,9 +3,17 @@
 {{define "content"}}
 <div class="layui-main">
     <div class="search-form">
-        用户名：
         <div class="layui-inline">
-          <input class="layui-input" name="username" id="username" autocomplete="off">
+          <input class="layui-input" placeholder="订单号" name="order_no" id="order_no" autocomplete="off">
+        </div>
+        <div class="layui-inline">
+          <input class="layui-input" placeholder="邮箱" name="order_email" id="order_email" autocomplete="off">
+        </div>
+        <div class="layui-inline">
+          <input class="layui-input" placeholder="手机号" name="shipping_telephone" id="shipping_telephone" autocomplete="off">
+        </div>
+        <div class="layui-inline">
+          <input class="layui-input" placeholder="客户姓名" name="shipping_name" id="shipping_name" autocomplete="off">
         </div>
         <button class="layui-btn" data-type="reload">搜索</button>
     </div>
@@ -40,6 +48,7 @@ layui.use(['table', 'dropdown'], function(){
     ,page: true
     ,limit:20
     ,loading:true
+    ,lineStyle:"height:100%"
     ,response: {
       statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
     }
@@ -52,28 +61,72 @@ layui.use(['table', 'dropdown'], function(){
       };
     }
     ,cols: [[
-      {type: 'checkbox', fixed: 'left'}
-      ,{field:'id', fixed: 'left', width:80, title: 'ID', sort: true}
-      ,{field:'order_no', title: '订单号'}
-      ,{field:'order_products', title: '订单商品',templet: function(d){
-        console.log(d); // 得到当前行数据
-        console.log(this); // 得到表头当前列配置项
-        console.log(d.LAY_INDEX); //得到序号。一般不常用
-        console.log(d.LAY_COL); //得到表头当前列配置项，同 this
-        html = ""
-        layui.each
+      {type: 'checkbox'}
+      ,{field:'id', width:80, title: 'ID', sort: true}
+      ,{field:'order_no', title: '订单号',width:120}
+      ,{field:'order_products', title: '订单商品',minWidth:200,templet: function(d){
+        html = "<div class='product-list'>"
         layui.each(d.order_products, function(index, item){
-            html += "<div id='product_idx_'"+item.id+">"
-            html += "<span>"+item.name+"</span>"
-            html += "<span>"+item.sku+"</span>"
-            html += "<span>"+item.images+"</span>"
+            html += "<div class='product-item' id='product_idx_"+item.id+"'>"
+              html += "<div class='product-info'>"
+                html += "<div class='product-images'>"
+                  html += "<img src='http://127.0.0.1:8000/static/"+ item.images +"' alt='"+item.name + "_" + item.sku+"'>"
+                html += "</div>"
+                html += "<div class='product-detail'>"
+                  html += "<p>name:"+item.name+"</p>"
+                  html += "<p>sku:"+item.sku+"</p>"
+                  html += "<p>"+item.attribute+"</p>"
+                html += "</div>"
+              html += "</div>"
+              html += "<div class='product-action'>"
+              html += "</div>"
             html += "</div>"
         }); 
+        html += "</div>"
         //得到当前行数据，并拼接成自定义模板
         return html
       }}
-      ,{field:'created_on', title:'加入时间', width: 200}
-      ,{fixed: 'right', title:'操作', width: 125, minWidth: 125, toolbar: '#barAction'}
+      ,{field:'shipping_name', title: '物流地址',minWidth:200, templet: function(d){
+          html = "<div>"
+          html += "<p>姓名:"+d.shipping_name+"</p>"
+          html += "<p>电话:"+d.shipping_telephone+"</p>"
+          html += "<p>邮箱:"+d.order_email+"</p>"
+          html += "<p>地区:"+d.shipping_country+" | "+ d.shipping_province + " | "+ d.shipping_city +"</p>"
+          html += "<p>地址:"+d.shipping_address+"</p>"
+          html += "</div>"
+        return html
+      }}
+      ,{field:'order_shipping_info', title: '物流方式', templet: function(d){
+        console.log(d.order_shipping_info)
+        html = "<div>"
+          html += "<p>"+d.order_shipping_info.name+"</p>"
+        html += "</div>"
+        return html
+      }}
+      ,{field:'order_amount', title: '订单金额', templet: function(d){
+        html = "<div>"
+          html += "<p>折扣:"+d.discount_amount+"</p>"
+          html += "<p>优惠券:"+d.coupon_amount+"</p>"
+          html += "<p>运费:"+d.shipping_amount+"</p>"
+          html += "<p>总价:"+d.order_amount+"</p>"
+        html += "</div>"
+        return html
+      }}
+      ,{field:'payment_status_info', title: '支付详情', templet: function(d){
+        html = "<div>"
+          html += "<p>支付方式:"+d.payment_type_info.name+"</p>"
+          html += "<p>支付状态:"+d.payment_status_info.name+"</p>"
+        html += "</div>"
+        return html
+      }}
+      ,{field:'order_status_info', title: '订单状态', templet: function(d){
+        html = "<div>"
+          html += "<p>状态:"+d.order_status_info.name+"</p>"
+        html += "</div>"
+        return html
+      }}
+      ,{field:'created_on', title:'下单时间', width: 200}
+      ,{title:'操作',height:'100%', width: 125, minWidth: 125, toolbar: '#barAction'}
     ]]
     ,toolbar: '#toolbar'
     ,done:function(res){
