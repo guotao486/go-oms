@@ -2,20 +2,94 @@
 
 {{define "content"}}
 <div class="layui-main">
-    <div class="search-form">
-        <div class="layui-inline">
+    <div class="search-form layui-form">
+      <div class="layui-form-item">
+        <label class="layui-form-label">订单号</label>
+        <div class="layui-input-inline">
           <input class="layui-input" placeholder="订单号" name="order_no" id="order_no" autocomplete="off">
         </div>
-        <div class="layui-inline">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-inline">
           <input class="layui-input" placeholder="邮箱" name="order_email" id="order_email" autocomplete="off">
         </div>
-        <div class="layui-inline">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
           <input class="layui-input" placeholder="手机号" name="shipping_telephone" id="shipping_telephone" autocomplete="off">
         </div>
-        <div class="layui-inline">
+        <label class="layui-form-label">客户姓名</label>
+        <div class="layui-input-inline">
           <input class="layui-input" placeholder="客户姓名" name="shipping_name" id="shipping_name" autocomplete="off">
         </div>
-        <button class="layui-btn" data-type="reload">搜索</button>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">国家</label>
+        <div class="layui-input-inline">
+          <input class="layui-input" placeholder="国家" name="shipping_country" id="shipping_country" autocomplete="off">
+        </div>
+        <label class="layui-form-label">地区</label>
+        <div class="layui-input-inline">
+          <input class="layui-input" placeholder="地区" name="shipping_province" id="shipping_province" autocomplete="off">
+        </div>
+        <label class="layui-form-label">城市</label>
+        <div class="layui-input-inline">
+          <input class="layui-input" placeholder="城市" name="shipping_city" id="shipping_city" autocomplete="off">
+        </div>
+        <label class="layui-form-label">地址</label>
+        <div class="layui-input-inline">
+          <input class="layui-input" placeholder="地址" name="shipping_address" id="shipping_address" autocomplete="off">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">货币</label>
+        <div class="layui-input-inline">
+          <select class="layui-input" name="order_currency" id="order_currency">
+              <option value=""></option>
+              {{range $c := .data.currency}}
+              <option value="{{$c.ID}}" >{{$c.Name}}</option>
+              {{end}}
+          </select>
+        </div>
+        <label class="layui-form-label">支付类型</label>
+        <div class="layui-input-inline">
+            <select class="layui-input" name="payment_type" id="payment_type">
+                <option value=""></option>
+                {{range $pt := .data.paymentType}}
+                <option value="{{$pt.ID}}" >{{$pt.Name}}</option>
+                {{end}}
+            </select>
+        </div>
+        <label class="layui-form-label">支付状态</label>
+        <div class="layui-input-inline">
+            <select class="layui-input" name="payment_status" id="payment_status">
+                <option value=""></option>
+                {{range $ps := .data.paymentStatus}}
+                <option value="{{$ps.ID}}" >{{$ps.Name}}</option>
+                {{end}}
+            </select>
+        </div>
+        <label class="layui-form-label">物流方式</label>
+        <div class="layui-input-inline">
+            <select class="layui-input" name="order_shipping" id="order_shipping">
+                <option value=""></option>
+                {{range $os := .data.orderShipping}}
+                <option value="{{$os.ID}}" >{{$os.Name}}</option>
+                {{end}}
+            </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">订单状态</label>
+        <div class="layui-input-inline">
+            <select class="layui-input" name="order_status" id="order_status">
+                <option value=""></option>
+                {{range $os := .data.orderStatus}}
+                <option value="{{$os.ID}}" >{{$os.Name}}</option>
+                {{end}}
+            </select>
+        </div>
+      <button class="layui-btn" data-type="reload">搜索</button>
+
+      </div>
     </div>
     <table class="layui-hide" id="list" lay-filter="list">
     </table>
@@ -115,6 +189,7 @@ layui.use(['table', 'dropdown'], function(){
       ,{field:'payment_status_info', title: '支付详情', templet: function(d){
         html = "<div>"
           html += "<p>支付方式:"+d.payment_type_info.name+"</p>"
+          html += "<p>支付货币:"+d.currency_info.name+"</p>"
           html += "<p>支付状态:"+d.payment_status_info.name+"</p>"
         html += "</div>"
         return html
@@ -144,7 +219,19 @@ layui.use(['table', 'dropdown'], function(){
           curr: 1 //重新从第 1 页开始
         }
         ,where: {
-            username: $('#username').val()
+          order_no:$('#order_no').val()
+          ,order_email: $('#order_email').val()
+          ,shipping_name: $('#shipping_name').val()
+          ,shipping_telephone: $('#shipping_telephone').val()
+          ,shipping_country: $('#shipping_country').val()
+          ,shipping_province: $('#shipping_province').val()
+          ,shipping_city: $('#shipping_city').val()
+          ,shipping_address: $('#shipping_address').val()
+          ,order_currency: $('#order_currency').val()
+          ,payment_type: $('#order_currency').val()
+          ,payment_status: $('#payment_status').val()
+          ,order_shipping: $('#order_shipping').val()
+          ,order_status: $('#order_status').val()
         }
       });
     }
@@ -163,9 +250,21 @@ layui.use(['table', 'dropdown'], function(){
     var othis = lay(this);
     switch(obj.event){
       case 'reload':
-        table.reload('user-list', {
+        table.reload('list', {
             where: {
-                username: $('#username').val()
+              order_no:$('#order_no').val()
+              ,order_email: $('#order_email').val()
+              ,shipping_name: $('#shipping_name').val()
+              ,shipping_telephone: $('#shipping_telephone').val()
+              ,shipping_country: $('#shipping_country').val()
+              ,shipping_province: $('#shipping_province').val()
+              ,shipping_city: $('#shipping_city').val()
+              ,shipping_address: $('#shipping_address').val()
+              ,order_currency: $('#order_currency').val()
+              ,payment_type: $('#order_currency').val()
+              ,payment_status: $('#payment_status').val()
+              ,order_shipping: $('#order_shipping').val()
+              ,order_status: $('#order_status').val()
             }
         });
       break;

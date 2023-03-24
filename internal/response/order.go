@@ -32,8 +32,8 @@ type OrderResponse struct {
 	DiscountAmount    float32               `json:"discount_amount"`
 	ShippingAmount    float32               `json:"shipping_amount"`
 	CouponAmount      float32               `json:"coupon_amount"`
-	OrderCurrency     int32                 `json:"order_currency"`
-	CurrencyInfo      *model.Currency       `json:"currencyInfo"`
+	OrderCurrency     int32                 `json:"-"`
+	CurrencyInfo      *model.Currency       `gorm:"foreignKey:OrderCurrency" json:"currency_info"`
 	PaymentType       int32                 `json:"-"`
 	PaymentTypeInfo   *model.PaymentType    `gorm:"foreignKey:PaymentType" json:"payment_type_info"`
 	PaymentStatus     int32                 `json:"-"`

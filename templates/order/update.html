@@ -131,7 +131,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">支付类型</label>
             <div class="layui-input-inline">
-                <select name="payment_type" lay-verify="">
+                <select name="payment_type" lay-verify="required" lay-reqtext="支付类型是必填项，岂能为空？">
                     {{range $pt := .data.paymentType}}
                     <option value="{{$pt.ID}}" {{if eq $pt.ID $.data.orderInfo.PaymentType}}checked="" {{end}}>{{$pt.Name}}</option>
                     {{end}}
@@ -139,7 +139,7 @@
             </div>
             <label class="layui-form-label">支付状态</label>
             <div class="layui-input-inline">
-                <select name="payment_status" lay-verify="">
+                <select name="payment_status" lay-verify="required" lay-reqtext="支付状态是必填项，岂能为空？">
                     {{range $ps := .data.paymentStatus}}
                     <option value="{{$ps.ID}}" {{if eq $ps.ID $.data.orderInfo.PaymentStatus}}checked="" {{end}}>{{$ps.Name}}</option>
                     {{end}}
@@ -149,7 +149,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">物流方式</label>
             <div class="layui-input-inline">
-                <select name="order_shipping" lay-verify="">
+                <select name="order_shipping" >
                     {{range $os := .data.orderShipping}}
                     <option value="{{$os.ID}}" {{if eq $os.ID $.data.orderInfo.OrderShipping}}checked="" {{end}}>{{$os.Name}}</option>
                     {{end}}
@@ -157,7 +157,7 @@
             </div>
             <label class="layui-form-label">订单状态</label>
             <div class="layui-input-inline">
-                <select name="order_status" lay-verify="">
+                <select name="order_status" lay-verify="required" lay-reqtext="订单状态是必填项，岂能为空？">
                     {{range $os := .data.orderStatus}}
                     <option value="{{$os.ID}}" {{if eq $os.ID $.data.orderInfo.OrderStatus}}checked="" {{end}}>{{$os.Name}}</option>
                     {{end}}
