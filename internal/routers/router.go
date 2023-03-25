@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:27
- * @LastEditTime: 2023-03-13 11:44:53
+ * @LastEditTime: 2023-03-25 11:02:45
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\routers\router.go
@@ -126,6 +126,12 @@ func NewRouter() *gin.Engine {
 	orderR.GET("/update", controller.OrderC.Update)
 	orderR.POST("/update", controller.OrderC.Update)
 	orderR.DELETE("/delete/:id", controller.OrderC.Delete)
+	orderR.GET("/ajax_update/payment", controller.OrderC.AjaxUpdatePayment)
+	orderR.POST("/ajax_update/payment", controller.OrderC.AjaxUpdatePayment)
+	orderR.GET("/ajax_update/status", controller.OrderC.AjaxUpdateStatus)
+	orderR.POST("/ajax_update/status", controller.OrderC.AjaxUpdateStatus)
+	orderR.GET("/ajax_update/shipping", controller.OrderC.AjaxUpdateShipping)
+	orderR.POST("/ajax_update/shipping", controller.OrderC.AjaxUpdateShipping)
 
 	// auth 路由
 	// r.POST("/auth", api.GetAuth)

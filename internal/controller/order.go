@@ -266,3 +266,175 @@ func (o *OrderController) Delete(c *gin.Context) {
 		return
 	}
 }
+
+func (o *OrderController) AjaxUpdatePayment(c *gin.Context) {
+	if c.Request.Method == http.MethodGet {
+		param := request.AjaxUpdateOrderGetRequest{}
+		response := app.NewResponse(c)
+		valid, errs := app.BindAndValid(c, &param)
+		if !valid {
+			global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
+			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+			response.ToErrorResponse(errRsp)
+			return
+		}
+		svc := service.New(c.Request.Context())
+		order, err := svc.GetOrderById(param.ID)
+		if err != nil {
+			global.Logger.Errorf(c, "svc.GetOrderById err: %v", errs)
+			response.ToErrorResponse(errcode.ErrorOrderNotFoundFail)
+			return
+		}
+
+		var data gin.H
+		currencyList, err := svc.GetCurrencyList()
+		if err != nil {
+			global.Logger.Errorf(c, "svc.GetCurrencyList err: %v", err)
+		}
+		paymentStatusList, err := svc.GetPaymentStatusList()
+		if err != nil {
+			global.Logger.Errorf(c, "svc.GetCurrencyList err: %v", err)
+		}
+		paymentTypeList, err := svc.GetPaymentTypeList()
+		if err != nil {
+			global.Logger.Errorf(c, "svc.GetCurrencyList err: %v", err)
+		}
+		data = gin.H{
+			"orderInfo":     order,
+			"currency":      currencyList,
+			"paymentStatus": paymentStatusList,
+			"paymentType":   paymentTypeList,
+		}
+
+		c.HTML(http.StatusOK, "ajaxForm/order_ajax_update_payment", data)
+		return
+	} else {
+		param := request.AjaxUpdateOrderPaymentRequest{}
+		response := app.NewResponse(c)
+		valid, errs := app.BindAndValid(c, &param)
+		if !valid {
+			global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
+			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+			response.ToErrorResponse(errRsp)
+			return
+		}
+		svc := service.New(c.Request.Context())
+		err := svc.AjaxUpdateOrderPayment(&param)
+		if err != nil {
+			global.Logger.Errorf(c, "svc.GetOrderById err: %v", errs)
+			response.ToErrorResponse(errcode.ErrorOrderNotFoundFail)
+			return
+		}
+
+		response.ToSuccessResponse(nil)
+		return
+	}
+}
+
+func (o *OrderController) AjaxUpdateStatus(c *gin.Context) {
+	if c.Request.Method == http.MethodGet {
+		param := request.AjaxUpdateOrderGetRequest{}
+		response := app.NewResponse(c)
+		valid, errs := app.BindAndValid(c, &param)
+		if !valid {
+			global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
+			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+			response.ToErrorResponse(errRsp)
+			return
+		}
+		svc := service.New(c.Request.Context())
+		order, err := svc.GetOrderById(param.ID)
+		if err != nil {
+			global.Logger.Errorf(c, "svc.GetOrderById err: %v", errs)
+			response.ToErrorResponse(errcode.ErrorOrderNotFoundFail)
+			return
+		}
+
+		var data gin.H
+		orderStatus, err := svc.GetOrderStatusList()
+		if err != nil {
+			global.Logger.Errorf(c, "svc.GetOrderStatusList err: %v", err)
+		}
+		data = gin.H{
+			"orderInfo":   order,
+			"orderStatus": orderStatus,
+		}
+
+		c.HTML(http.StatusOK, "ajaxForm/order_ajax_update_status", data)
+		return
+	} else {
+		param := request.AjaxUpdateOrderStatusRequest{}
+		response := app.NewResponse(c)
+		valid, errs := app.BindAndValid(c, &param)
+		if !valid {
+			global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
+			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+			response.ToErrorResponse(errRsp)
+			return
+		}
+		svc := service.New(c.Request.Context())
+		err := svc.AjaxUpdateOrderStatus(&param)
+		if err != nil {
+			global.Logger.Errorf(c, "svc.GetOrderById err: %v", errs)
+			response.ToErrorResponse(errcode.ErrorOrderNotFoundFail)
+			return
+		}
+
+		response.ToSuccessResponse(nil)
+		return
+	}
+}
+
+func (o *OrderController) AjaxUpdateShipping(c *gin.Context) {
+	if c.Request.Method == http.MethodGet {
+		param := request.AjaxUpdateOrderGetRequest{}
+		response := app.NewResponse(c)
+		valid, errs := app.BindAndValid(c, &param)
+		if !valid {
+			global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
+			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+			response.ToErrorResponse(errRsp)
+			return
+		}
+		svc := service.New(c.Request.Context())
+		order, err := svc.GetOrderById(param.ID)
+		if err != nil {
+			global.Logger.Errorf(c, "svc.GetOrderById err: %v", errs)
+			response.ToErrorResponse(errcode.ErrorOrderNotFoundFail)
+			return
+		}
+
+		var data gin.H
+		orderShipping, err := svc.GetOrderShippingList()
+		if err != nil {
+			global.Logger.Errorf(c, "svc.GetOrderShippingList err: %v", err)
+		}
+		data = gin.H{
+			"orderInfo":     order,
+			"orderShipping": orderShipping,
+		}
+
+		c.HTML(http.StatusOK, "ajaxForm/order_ajax_update_shipping", data)
+		return
+	} else {
+		param := request.AjaxUpdateOrderShippingRequest{}
+		response := app.NewResponse(c)
+		valid, errs := app.BindAndValid(c, &param)
+		if !valid {
+			global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
+			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+			response.ToErrorResponse(errRsp)
+			return
+		}
+		svc := service.New(c.Request.Context())
+		err := svc.AjaxUpdateOrderShipping(&param)
+		if err != nil {
+			global.Logger.Errorf(c, "svc.GetOrderById err: %v", errs)
+			response.ToErrorResponse(errcode.ErrorOrderNotFoundFail)
+			return
+		}
+
+		response.ToSuccessResponse(nil)
+		return
+	}
+}

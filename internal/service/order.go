@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-03-17 14:22:12
- * @LastEditTime: 2023-03-23 09:23:22
+ * @LastEditTime: 2023-03-25 10:52:48
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\service\order.go
@@ -99,4 +99,37 @@ func (s *Service) DeleteOrder(param *request.DeleteOrderRequest) error {
 	}
 
 	return s.dao.DeleteOrder(order)
+}
+
+func (s *Service) AjaxUpdateOrderPayment(param *request.AjaxUpdateOrderPaymentRequest) error {
+	order, err := s.dao.GetOrderById(param.ID)
+	if err != nil {
+		return errcode.ErrorOrderNotFoundFail
+	}
+
+	app.StructAssign(order, param)
+
+	return s.dao.UpdateOrder(order)
+}
+
+func (s *Service) AjaxUpdateOrderStatus(param *request.AjaxUpdateOrderStatusRequest) error {
+	order, err := s.dao.GetOrderById(param.ID)
+	if err != nil {
+		return errcode.ErrorOrderNotFoundFail
+	}
+
+	app.StructAssign(order, param)
+
+	return s.dao.UpdateOrder(order)
+}
+
+func (s *Service) AjaxUpdateOrderShipping(param *request.AjaxUpdateOrderShippingRequest) error {
+	order, err := s.dao.GetOrderById(param.ID)
+	if err != nil {
+		return errcode.ErrorOrderNotFoundFail
+	}
+
+	app.StructAssign(order, param)
+
+	return s.dao.UpdateOrder(order)
 }

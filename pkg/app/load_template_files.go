@@ -36,6 +36,7 @@ func getFilesList(path, stuffix string) (files []string) {
 // 加载指定路径全部模板文件
 func LoadTemplateFiles() multitemplate.Renderer {
 	templateDir, templateLayoutDir, stuffix := global.AppSetting.TemplatePath, global.AppSetting.TemplateLayoutPath, global.AppSetting.TemplateStuffix
+	ajaxTemplate := "ajaxForm"
 	r := multitemplate.NewRenderer()
 	// 查找模板路径下所有文件
 	rd, _ := ioutil.ReadDir(templateDir)
@@ -43,12 +44,15 @@ func LoadTemplateFiles() multitemplate.Renderer {
 	var layoutFiles []string   // 根模板文件
 	var moduleFiles []string   // 模块模板
 	var templateFiles []string // 根目录模板
+	var ajaxFormFiles []string
 	for _, fi := range rd {
 		if fi.IsDir() {
 			files := getFilesList(path.Join(templateDir, fi.Name()), stuffix)
 			// 根模板文件
 			if fi.Name() == templateLayoutDir {
 				layoutFiles = append(layoutFiles, files...)
+			} else if fi.Name() == ajaxTemplate {
+				ajaxFormFiles = append(ajaxFormFiles, files...)
 			} else {
 				// 模块模板
 				moduleFiles = append(moduleFiles, files...)
@@ -65,6 +69,9 @@ func LoadTemplateFiles() multitemplate.Renderer {
 	// 根目录模板处理
 	for _, f := range templateFiles {
 		r.AddFromFiles(path.Join(templateDir, f))
+	}
+	for _, f := range ajaxFormFiles {
+		r.AddFromFiles(f[len(templateDir)+1:len(f)-len(stuffix)], f)
 	}
 	// 模块模板处理
 	for _, f := range moduleFiles {

@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-03-16 10:48:14
- * @LastEditTime: 2023-03-22 11:22:02
+ * @LastEditTime: 2023-03-25 10:51:37
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\request\order.go
@@ -93,4 +93,26 @@ type CreateOrderProductRequest struct {
 // 删除
 type DeleteOrderRequest struct {
 	ID uint32 `uri:"id" form:"id" json:"id" binding:"required,gte=1" label:"订单ID"`
+}
+
+type AjaxUpdateOrderPaymentRequest struct {
+	ID uint32 `form:"id" binding:"required" label:"订单编号"` // id
+
+	OrderCurrency int32 `form:"order_currency" binding:"required" label:"订单货币"`
+	PaymentType   int32 `form:"payment_type" binding:"required" label:"支付类型"`
+	PaymentStatus int32 `form:"payment_status" binding:"required" label:"支付状态"`
+}
+type AjaxUpdateOrderStatusRequest struct {
+	ID uint32 `form:"id" binding:"required" label:"订单编号"` // id
+
+	OrderStatus int32 `form:"order_status" binding:"required" label:"订单状态"`
+}
+
+type AjaxUpdateOrderShippingRequest struct {
+	ID uint32 `form:"id" binding:"required" label:"订单编号"` // id
+
+	OrderShipping int32 `form:"order_shipping" binding:"required" label:"物流方式"`
+}
+type AjaxUpdateOrderGetRequest struct {
+	ID uint32 `form:"id" binding:"required" label:"订单编号"` // id
 }

@@ -1,3 +1,4 @@
+
 // ajaxFormSubmit
 // @param url
 // @param formData
@@ -18,9 +19,11 @@ function ajaxSubmit(url, formData, href = "/home", method = "POST",btn = null){
                 }
             } else {
                 SuccessMessage("提交成功！");
-                setTimeout(function(){
-                    window.location.href = href
-                },1000)
+                if (href != null){
+                    setTimeout(function(){
+                        window.location.href = href
+                    },1000)
+                }
                 // alert("您当前通行证:" + res.token.token)
 
                 // // 跳转页面
@@ -36,6 +39,29 @@ function ajaxSubmit(url, formData, href = "/home", method = "POST",btn = null){
             }
             if (btn) {
                 btn.text("提交").attr("disabled", false).removeClass("layui-disabled");
+            }
+        }
+    })
+}
+
+function ajaxHtml(url, formData){
+    $.ajax({
+        url: url,
+        method: "GET",
+        data: formData,
+        success: function(res) {
+            layer.open({
+                title: '#',
+                type: 1,
+                area: ['80%','80%'],
+                content: res
+            });
+        },
+        error: function(res) {
+            if (res.responseJSON) {
+                ErrorMessage(res.responseJSON.message);
+            } else {
+                ErrorMessage("提交失败！");
             }
         }
     })

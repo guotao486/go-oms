@@ -103,7 +103,7 @@
     <script type="text/html" id="barAction">
       <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
       <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    </script>  
+    </script>
 </div>
 {{end}}
 {{define "content_script"}}
@@ -118,7 +118,6 @@ layui.use(['table', 'dropdown'], function(){
     ,url:'/order/list' // 此处为静态模拟数据，实际使用时需换成真实接口
     ,height: 'full-200' // 最大高度减去其他容器已占有的高度差
     ,cellMinWidth: 80
-    ,defaultToolbar:[]
     ,page: true
     ,limit:20
     ,loading:true
@@ -170,11 +169,13 @@ layui.use(['table', 'dropdown'], function(){
           html += "</div>"
         return html
       }}
-      ,{field:'order_shipping_info', title: '物流方式', templet: function(d){
-        console.log(d.order_shipping_info)
+      ,{field:'order_shipping_info', title: '物流方式',width:100, templet: function(d){
         html = "<div>"
           html += "<p>"+d.order_shipping_info.name+"</p>"
         html += "</div>"
+        html += '<div class="ml-20">'
+          html += '<a class="layui-btn layui-btn-xs" lay-event="update_shipping"><i class="layui-icon layui-icon-edit"></i></a>'
+        html += '</div>'
         return html
       }}
       ,{field:'order_amount', title: '订单金额', templet: function(d){
@@ -192,12 +193,18 @@ layui.use(['table', 'dropdown'], function(){
           html += "<p>支付货币:"+d.currency_info.name+"</p>"
           html += "<p>支付状态:"+d.payment_status_info.name+"</p>"
         html += "</div>"
+        html += '<div class="ml-20">'
+          html += '<a class="layui-btn layui-btn-xs" lay-event="update_payment"><i class="layui-icon layui-icon-edit"></i></a>'
+        html += '</div>'
         return html
       }}
       ,{field:'order_status_info', title: '订单状态', templet: function(d){
         html = "<div>"
           html += "<p>状态:"+d.order_status_info.name+"</p>"
         html += "</div>"
+        html += '<div class="ml-20">'
+          html += '<a class="layui-btn layui-btn-xs" lay-event="update_status"><i class="layui-icon layui-icon-edit"></i></a>'
+        html += '</div>'
         return html
       }}
       ,{field:'created_on', title:'下单时间', width: 200}
@@ -277,6 +284,8 @@ layui.use(['table', 'dropdown'], function(){
   //触发单元格工具事件
   table.on('tool(list)', function(obj){ // 双击 toolDouble
     var data = obj.data;
+    console.log(obj)
+    console.log(data)
     switch(obj.event){
       case 'del':
         layer.confirm('真的删除么', function(index){
@@ -287,6 +296,15 @@ layui.use(['table', 'dropdown'], function(){
       case 'edit':
         setTimeout(window.location.href = '/order/update?id='+data.id, 500);
       break;
+      case 'update_payment':
+        ajaxHtml("/order/ajax_update/payment",{id:data.id})
+        break;
+      case 'update_status':
+        ajaxHtml("/order/ajax_update/status",{id:data.id})
+        break;
+      case 'update_shipping':
+        ajaxHtml("/order/ajax_update/shipping",{id:data.id})
+        break;
     };
 
   });

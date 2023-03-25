@@ -19,7 +19,6 @@
 package dao
 
 import (
-	"fmt"
 	"oms/internal/model"
 	"oms/internal/response"
 )
@@ -31,7 +30,6 @@ func (d *Dao) CreateOrder(order *model.Order) error {
 
 // 更新订单
 func (d *Dao) UpdateOrder(order *model.Order) error {
-	fmt.Printf("dao order.CouponAmount: %v\n", order.CouponAmount)
 	return d.engine.Model(&order).Save(&order).Error
 }
 

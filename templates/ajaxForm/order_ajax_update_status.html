@@ -1,0 +1,48 @@
+<!--
+ * @Author: GG
+ * @Date: 2023-03-24 15:56:13
+ * @LastEditTime: 2023-03-25 10:40:20
+ * @LastEditors: GG
+ * @Description: 
+ * @FilePath: \oms\templates\ajaxForm\order_ajax_update.html
+ * 
+-->
+<div class="layui-main mt-10">
+    <form id="order_ajax_update" class="layui-form" lay-filter="test1">
+        <input type="hidden" name="id" lay-verify="required"  placeholder="请输入" autocomplete="off" class="layui-input" value="{{.orderInfo.ID}}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">订单状态</label>
+            <div class="layui-input-inline">
+                <select class="layui-input" name="order_status" lay-verify="required" lay-reqtext="订单状态是必填项，岂能为空？">
+                    {{range $os := .orderStatus}}
+                    <option value="{{$os.ID}}" {{if eq $os.ID $.orderInfo.OrderStatus}}checked="" {{end}}>{{$os.Name}}</option>
+                    {{end}}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit lay-filter="form_submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+layui.use(['form', 'layer'], function(){
+    // 表单提交事件
+    var form = layui.form;
+    form.render('select');
+    form.on('submit(form_submit)', function(data){
+        formData = $('#order_ajax_update').serialize()
+        var btn = $(this);
+        btn.text("提交中...").attr("disabled", "disabled").addClass("layui-disabled");
+        ajaxSubmit("/order/ajax_update/status",formData, "/order/", "POST", btn)
+        return false;
+    });
+})
+</script>
+
+
