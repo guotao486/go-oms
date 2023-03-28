@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"oms/global"
 	"oms/internal/request"
@@ -126,7 +125,6 @@ func (o *OrderController) Create(c *gin.Context) {
 		for k, v := range p {
 			product := &request.CreateOrderProductRequest{}
 			app.GetPostMapFormItem(c.Request.PostForm, v["i"], v["j"], "product", k, product)
-			fmt.Printf("product: %v\n", *product)
 			dicts[k] = product
 		}
 

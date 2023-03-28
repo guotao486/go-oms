@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:27
- * @LastEditTime: 2023-03-25 11:02:45
+ * @LastEditTime: 2023-03-28 14:24:21
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\routers\router.go
@@ -75,6 +75,8 @@ func NewRouter() *gin.Engine {
 		r.Use(middleware.Recovery())  // 异常捕获
 	}
 
+	// 中间件
+	r.Use(middleware.Sessions())
 	r.Use(middleware.Tracing())                        // 链路追踪
 	r.Use(middleware.RateLimiter(methodLimiter))       // 限流器
 	r.Use(middleware.ContextTimeout(60 * time.Second)) // 超时控制
@@ -94,6 +96,8 @@ func NewRouter() *gin.Engine {
 	controller := NewController()
 	r.GET("/home", controller.IndexC.Home)
 	r.GET("/login", controller.AuthC.Login)
+	r.POST("/login", controller.AuthC.Login)
+	r.GET("/logout", controller.AuthC.Logout)
 
 	// user module
 	userR := r.Group("/user")

@@ -68,7 +68,7 @@ func LoadTemplateFiles() multitemplate.Renderer {
 
 	// 根目录模板处理
 	for _, f := range templateFiles {
-		r.AddFromFiles(path.Join(templateDir, f))
+		r.AddFromFiles(f[:len(f)-len(stuffix)], path.Join(templateDir, f))
 	}
 	for _, f := range ajaxFormFiles {
 		r.AddFromFiles(f[len(templateDir)+1:len(f)-len(stuffix)], f)

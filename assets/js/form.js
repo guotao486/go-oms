@@ -31,6 +31,7 @@ function ajaxSubmit(url, formData, href = "/home", method = "POST",btn = null){
             }
         },
         error: function(res) {
+            console.log(res.responseJSON)
             if (res.responseJSON) {
                 ErrorMessage(res.responseJSON.message);
                 ShowErrorMessage(res.responseJSON)

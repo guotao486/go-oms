@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-30 15:28:37
- * @LastEditTime: 2023-03-17 16:13:02
+ * @LastEditTime: 2023-03-28 15:18:03
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\pkg\errcode\module_code.go
@@ -10,6 +10,9 @@
 package errcode
 
 var (
+	ErrorLoginFail         = NewError(20000001, "登录失败")
+	ErrorLoginPasswordFail = NewError(20000002, "用户或密码错误")
+
 	ErrorGetTagListFail = NewError(20010001, "获取标签列表失败")
 	ErrorCreateTagFail  = NewError(20010002, "新增标签失败")
 	ErrorUpdateTagFail  = NewError(20010003, "更新标签失败")

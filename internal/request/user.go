@@ -9,7 +9,7 @@ type LoginRequest struct {
 // 创建
 type CreateUserRequest struct {
 	Username string `form:"username" binding:"required,min=2,max=25" label:"用户名"`
-	Password string `form:"username" binding:"required,min=6,max=25" label:"密码"`
+	Password string `form:"password" binding:"required,min=6,max=25" label:"密码"`
 	Level    uint8  `form:"level" binding:"required"`
 }
 
