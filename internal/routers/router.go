@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:27
- * @LastEditTime: 2023-03-28 14:24:21
+ * @LastEditTime: 2023-03-30 10:01:23
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\routers\router.go
@@ -94,9 +94,11 @@ func NewRouter() *gin.Engine {
 	r.POST("upload/image_file", upload.ImageFiles)
 
 	controller := NewController()
-	r.GET("/home", controller.IndexC.Home)
 	r.GET("/login", controller.AuthC.Login)
 	r.POST("/login", controller.AuthC.Login)
+
+	r.Use(middleware.IsLogin()) // 登录验证
+	r.GET("/home", controller.IndexC.Home)
 	r.GET("/logout", controller.AuthC.Logout)
 
 	// user module

@@ -1,25 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 08:57:23
- * @LastEditTime: 2023-03-24 16:30:43
- * @LastEditors: GG
- * @Description:
- * @FilePath: \oms\main.go
- *
- */
-/*
- * @Author: GG
- * @Date: 2023-02-28 08:57:23
- * @LastEditTime: 2023-03-22 17:31:39
- * @LastEditors: GG
- * @Description:
- * @FilePath: \oms\main.go
- *
- */
-/*
- * @Author: GG
- * @Date: 2023-02-28 08:57:23
- * @LastEditTime: 2023-03-14 16:44:35
+ * @LastEditTime: 2023-03-30 10:33:42
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\main.go
@@ -160,6 +142,7 @@ func main() {
 	// s.ListenAndServe()
 
 	go func() {
+		fmt.Println("go ListenAndServe")
 		err := s.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {
 			global.Logger.Fatalf(context.Background(), "s.ListenAndServe err: %v", err)
