@@ -17,8 +17,8 @@ import (
 type AuthController struct {
 }
 
-func NewAuth() AuthController {
-	return AuthController{}
+func NewAuth() *AuthController {
+	return &AuthController{}
 }
 
 // Login 登录页面
