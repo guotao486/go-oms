@@ -11,6 +11,7 @@ function ajaxSubmit(url, formData, href = "/home", method = "POST",btn = null){
         method: method,
         data: formData,
         success: function(res) {
+            console.log(res)
             if (res.code != 200) {
                 ErrorMessage(res.message);
                 ShowErrorMessage(res)

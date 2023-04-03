@@ -50,4 +50,10 @@ var (
 	ErrorOrderExistsFail          = NewError(20040007, "订单已存在")
 	ErrorAddOrderProductFail      = NewError(20040008, "订单商品添加失败")
 	ErrorOrderProductNotEmptyFail = NewError(20040009, "订单商品不能为空")
+
+	ErrorGetMenusListFail  = NewError(20050001, "获取菜单列表失败")
+	ErrorCreateMenusFail   = NewError(20050002, "创建菜单失败")
+	ErrorUpdateMenusFail   = NewError(20050003, "更新菜单失败")
+	ErrorDeleteMenusFail   = NewError(20050004, "删除菜单失败")
+	ErrorMenusNotFoundFail = NewError(20050005, "菜单不存在")
 )

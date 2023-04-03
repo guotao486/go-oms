@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-01-28 11:04:27
- * @LastEditTime: 2023-03-30 10:01:23
+ * @LastEditTime: 2023-04-03 15:45:17
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\routers\router.go
@@ -48,13 +48,16 @@ type Controller struct {
 	UserC      *controller.UserController
 	UserGroupC *controller.UserGroupController
 	OrderC     *controller.OrderController
+	MenusC     *controller.MenusController
 }
 
 func NewController() *Controller {
 	return &Controller{
+		AuthC:      controller.NewAuth(),
 		UserC:      controller.NewUser(),
 		UserGroupC: controller.NewUserGroup(),
 		OrderC:     controller.NewOrder(),
+		MenusC:     controller.NewMenus(),
 	}
 }
 
@@ -65,6 +68,7 @@ func NewRouter() *gin.Engine {
 	r.HTMLRender = app.LoadTemplateFiles()
 
 	r.Static("/assets", "./assets")
+	r.Static("/favicon.ico", "/favicon.ico")
 	if global.ServerSetting.RunMode == "debug" {
 		// 默认
 		r.Use(gin.Logger())   // 输出请求日志中间件
@@ -100,6 +104,18 @@ func NewRouter() *gin.Engine {
 	r.Use(middleware.IsLogin()) // 登录验证
 	r.GET("/home", controller.IndexC.Home)
 	r.GET("/logout", controller.AuthC.Logout)
+
+	// menus module
+	menusR := r.Group("/menus")
+	menusR.GET("/", controller.MenusC.Index)
+	menusR.GET("/list", controller.MenusC.List)
+	menusR.GET("/create", controller.MenusC.Create)
+	menusR.POST("/create", controller.MenusC.Create)
+	menusR.GET("/update", controller.MenusC.Update)
+	menusR.POST("/update", controller.MenusC.Update)
+	menusR.DELETE("/delete/:id", controller.MenusC.Delete)
+	menusR.POST("/update-sort", controller.MenusC.UpdateSort)
+	// menus end
 
 	// user module
 	userR := r.Group("/user")

@@ -197,7 +197,7 @@ func (d *Dao) GetOrderListPages(order *model.Order, pageOffest, pageSize int) ([
 	return orders, nil
 }
 
-// 删除用户，有delete_on 和 is_del 字段则是软删除
+// 删除订单，有delete_on 和 is_del 字段则是软删除
 func (d *Dao) DeleteOrder(order *model.Order) error {
 	return d.engine.Model(&order).Scopes(IsDelToUnable).Delete(&order).Error
 }

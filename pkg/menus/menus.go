@@ -1,13 +1,15 @@
 /*
  * @Author: GG
  * @Date: 2023-02-28 17:10:15
- * @LastEditTime: 2023-03-10 09:15:46
+ * @LastEditTime: 2023-04-03 16:48:43
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\pkg\menus\menus.go
  *
  */
 package menus
+
+import "fmt"
 
 type Menus struct {
 	Title     string
@@ -113,12 +115,42 @@ func GetMenus() []*Menus {
 				},
 			},
 		},
+		{
+			Title:  "菜单管理",
+			Router: "/menus/",
+			Sort:   1,
+			Role:   []uint8{1, 2},
+			ChildNode: []*Menus{
+				{
+					Title:     "新增菜单",
+					Router:    "/menus/create",
+					Sort:      1,
+					Role:      []uint8{1},
+					ChildNode: nil,
+				},
+				{
+					Title:     "编辑菜单",
+					Router:    "/menus/update",
+					Sort:      1,
+					Role:      []uint8{1},
+					ChildNode: nil,
+				},
+				{
+					Title:     "删除菜单",
+					Router:    "/menus/delete",
+					Sort:      1,
+					Role:      []uint8{1},
+					ChildNode: nil,
+				},
+			},
+		},
 	}
 	return MenusTree
 }
 
 func GetCurrent(urlPath string) *Menus {
 	m := GetMenus()
+	fmt.Printf("urlPath: %v\n", urlPath)
 	for _, menu := range m {
 		if urlPath == menu.Router {
 			return menu

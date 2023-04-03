@@ -1,0 +1,80 @@
+<!--
+ * @Author: GG
+ * @Date: 2023-03-31 14:52:19
+ * @LastEditTime: 2023-03-31 17:09:08
+ * @LastEditors: GG
+ * @Description: 
+ * @FilePath: \oms\templates\menus\update.html
+ * 
+-->
+{{template "base" .}}
+
+{{define "content"}}
+<div class="layui-main">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>更新菜单</legend>
+    </fieldset>
+    {{template "message" .}}
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单标题</label>
+            <input type="hidden" name="id" value="{{.data.menusInfo.ID}}">
+            <div class="layui-input-block">
+                <input type="text" name="title" lay-verify="required" lay-reqtext="必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="{{.data.menusInfo.Title}}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单路由</label>
+            <div class="layui-input-block">
+                <input type="text" name="router" lay-verify="required" lay-reqtext="必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="{{.data.menusInfo.Router}}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级菜单</label>
+            <div class="layui-input-inline">
+                <select name="parent_id">
+                    <option value="0">请选择</option>
+                    {{range $pm := .data.parentMenus}}
+                    <option value="{{$pm.ID}}" {{eq $pm.ID $.data.menusInfo.ParentID}}>{{$pm.Title}}</option>
+                    {{end}}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份权限</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="role" value="1" title="管理员" >
+                <input type="checkbox" name="role" value="2" title="普通成员">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-block">
+                <input type="text" name="sort"  placeholder="请输入" autocomplete="off" class="layui-input" value="{{.data.menusInfo.Sort}}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit lay-filter="form_submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+{{end}}
+{{define "content_script"}}
+<script>
+layui.use(['form', 'layer'], function(){
+    // 表单提交事件
+    var form = layui.form;
+    form.on('submit(form_submit)', function(data){
+        formData = $('.layui-form').serialize()
+        var btn = $(this);
+        btn.text("提交中...").attr("disabled", "disabled").addClass("layui-disabled");
+        ajaxSubmit("/menus/update",formData, "/menus/", "POST", btn)
+        return false;
+    });
+})
+</script>
+{{end}}
+

@@ -35,5 +35,9 @@ func PreloadAll(db *gorm.DB) *gorm.DB {
 // 未删除
 // is_del = 0
 func IsDelToUnable(db *gorm.DB) *gorm.DB {
-	return db.Where("is_del = ?", enum.IS_DEL_UNABLE)
+	return db.Where("is_del = ?", enum.DEFAULT_IS_DEL)
+}
+
+func StateToUnable(db *gorm.DB) *gorm.DB {
+	return db.Where("state = ?", enum.DEFAULT_STATE)
 }

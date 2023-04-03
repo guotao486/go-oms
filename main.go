@@ -142,7 +142,6 @@ func main() {
 	// s.ListenAndServe()
 
 	go func() {
-		fmt.Println("go ListenAndServe")
 		err := s.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {
 			global.Logger.Fatalf(context.Background(), "s.ListenAndServe err: %v", err)

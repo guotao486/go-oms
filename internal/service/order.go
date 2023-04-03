@@ -92,7 +92,7 @@ func (s Service) UpdateOrder(param *request.UpdateOrderPostRequest) error {
 }
 
 func (s *Service) DeleteOrder(param *request.DeleteOrderRequest) error {
-	// 检查是否有该用户
+	// 检查是否有该订单
 	order, err := s.dao.GetOrderById(param.ID)
 	if err != nil {
 		return errcode.ErrorOrderNotFoundFail
