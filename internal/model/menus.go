@@ -22,6 +22,9 @@ type Menus struct {
 	ChildNode []*Menus
 }
 
+var CacheMenusListKey = "cache_menus_list"
+var CacheParentMenusListKey = "cache_parent_menus_list"
+
 func init() {
 	global.ModelAutoMigrate = append(global.ModelAutoMigrate, &Menus{})
 }

@@ -1,8 +1,16 @@
+/*
+ * @Author: GG
+ * @Date: 2023-03-28 16:20:12
+ * @LastEditTime: 2023-04-06 15:06:12
+ * @LastEditors: GG
+ * @Description:
+ * @FilePath: \oms\internal\middleware\login.go
+ *
+ */
 package middleware
 
 import (
 	"encoding/gob"
-	"fmt"
 	"net/http"
 	"oms/global"
 	"oms/internal/model"
@@ -17,7 +25,6 @@ func IsLogin() gin.HandlerFunc {
 		sessions := sessions.NewSession(c)
 
 		user := sessions.Get("userinfo")
-		fmt.Printf("user: %v\n", user)
 		if user != nil {
 			gob.Register(model.User{})
 			sessions.Set("userinfo", user)

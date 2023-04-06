@@ -1,10 +1,12 @@
 package service
 
 import (
+	"oms/global"
 	"oms/internal/model"
 	"oms/internal/request"
 	"oms/internal/response"
 	"oms/pkg/app"
+	"oms/pkg/convert"
 	"oms/pkg/errcode"
 	"strings"
 )
@@ -15,7 +17,28 @@ func (s Service) GetMenusById(id uint32) (*model.Menus, error) {
 }
 
 func (s Service) GetMenusListAll() ([]*response.MenusResponse, error) {
-	menusList, err := s.dao.GetMenusListAll()
+	cache := global.CacheStore.Engine
+	var menusList []*response.MenusResponse
+	// 获取缓存
+	cacheList, _ := cache.Get(model.CacheMenusListKey)
+	// 若缓存不存在
+	if cacheList == nil {
+		menusList, err := s.dao.GetMenusListAll()
+		if err != nil {
+			return nil, err
+		}
+		st := &convert.StructTo{V: menusList}
+		buf, err := st.StructToBytes()
+		if err != nil {
+			return menusList, err
+		}
+		err = cache.Set(model.CacheMenusListKey, buf)
+		return menusList, err
+	}
+
+	// 缓存存在
+	bs := &convert.ByteTo{V: &menusList}
+	err := bs.ByteToStruct(cacheList)
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +46,28 @@ func (s Service) GetMenusListAll() ([]*response.MenusResponse, error) {
 }
 
 func (s Service) GetParentMenusList() ([]*response.MenusResponse, error) {
-	menusList, err := s.dao.GetParentMenusList()
+	cache := global.CacheStore.Engine
+	var menusList []*response.MenusResponse
+	// 获取缓存
+	cacheList, _ := cache.Get(model.CacheParentMenusListKey)
+	// 若缓存不存在
+	if cacheList == nil {
+		menusList, err := s.dao.GetParentMenusList()
+		if err != nil {
+			return nil, err
+		}
+		st := &convert.StructTo{V: menusList}
+		buf, err := st.StructToBytes()
+		if err != nil {
+			return menusList, err
+		}
+		err = cache.Set(model.CacheParentMenusListKey, buf)
+		return menusList, err
+	}
+
+	// 缓存存在
+	bs := &convert.ByteTo{V: &menusList}
+	err := bs.ByteToStruct(cacheList)
 	if err != nil {
 		return nil, err
 	}
