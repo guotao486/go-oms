@@ -11,4 +11,5 @@ var (
 	UnauthorizedTokenGenerate = NewError(10000006, "鉴权失败，Token生成失败")
 	TooManyRequests           = NewError(10000007, "请求过多") // 请求过多
 	NotLogin                  = NewError(10000008, "请登录")
+	NotRoleAuth               = NewError(10000009, "没有角色权限")
 )

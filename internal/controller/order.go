@@ -156,19 +156,18 @@ func (o *OrderController) Create(c *gin.Context) {
 func (o *OrderController) Update(c *gin.Context) {
 	if c.Request.Method == http.MethodGet {
 		param := request.UpdateOrderGetRequest{}
-		response := app.NewResponse(c)
 		valid, errs := app.BindAndValid(c, &param)
 		if !valid {
 			global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
 			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
-			response.ToErrorBadRequestHtml(errRsp)
+			o.ToErrorBadRequestHtml(c, errRsp)
 			return
 		}
 		svc := service.New(c.Request.Context())
 		order, err := svc.GetOrderById(param.ID)
 		if err != nil {
 			global.Logger.Errorf(c, "svc.GetOrderById err: %v", errs)
-			response.ToErrorBadRequestHtml(errcode.ErrorOrderNotFoundFail)
+			o.ToErrorBadRequestHtml(c, errcode.ErrorOrderNotFoundFail)
 			return
 		}
 

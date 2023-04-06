@@ -113,18 +113,3 @@ func (r *Response) ToErrorResponse(err *errcode.Error) {
 
 	r.Ctx.JSON(err.StatusCode(), response)
 }
-
-// 400
-func (r *Response) ToErrorBadRequestHtml(err *errcode.Error) {
-	r.Ctx.HTML(http.StatusBadRequest, "error/400", err.Msg())
-}
-
-// 403
-func (r *Response) ToErrorForbiddenHtml(err *errcode.Error) {
-	r.Ctx.HTML(http.StatusForbidden, "error/403", err.Msg())
-}
-
-// 404
-func (r *Response) ToErrorNotFoundHtml(err *errcode.Error) {
-	r.Ctx.HTML(http.StatusNotFound, "error/404", err.Msg())
-}

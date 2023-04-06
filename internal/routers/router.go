@@ -101,7 +101,9 @@ func NewRouter() *gin.Engine {
 	r.GET("/login", controller.AuthC.Login)
 	r.POST("/login", controller.AuthC.Login)
 
-	r.Use(middleware.IsLogin()) // 登录验证
+	r.Use(middleware.IsLogin())  // 登录验证
+	r.Use(middleware.RoleAuth()) // 角色权限
+
 	r.GET("/home", controller.IndexC.Home)
 	r.GET("/logout", controller.AuthC.Logout)
 

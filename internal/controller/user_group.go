@@ -60,11 +60,10 @@ func (u *UserGroupController) List(c *gin.Context) {
 func (u *UserGroupController) Create(c *gin.Context) {
 	if c.Request.Method == http.MethodGet {
 		svc := service.New(c)
-		response := app.NewResponse(c)
 		userList, err := svc.GetUserListAll()
 		if err != nil {
 			global.Logger.Errorf(c, "svc.GetUserListAll errs: %v", err)
-			response.ToErrorBadRequestHtml(errcode.ErrorGetUserListFail)
+			u.ToErrorBadRequestHtml(c, errcode.ErrorGetUserListFail)
 			return
 		}
 		u.RenderHtml(c, http.StatusOK, "group/create", gin.H{
@@ -101,25 +100,24 @@ func (u *UserGroupController) Create(c *gin.Context) {
 func (u *UserGroupController) Update(c *gin.Context) {
 	if c.Request.Method == http.MethodGet {
 		svc := service.New(c)
-		response := app.NewResponse(c)
 		param := request.UpdateUserGroupGetRequest{}
 		valid, errs := app.BindAndValid(c, &param)
 		if !valid {
 			global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
 			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
-			response.ToErrorBadRequestHtml(errRsp)
+			u.ToErrorBadRequestHtml(c, errRsp)
 			return
 		}
 		userGroup, err := svc.GetUserGroupById(param.ID)
 		if err != nil {
 			global.Logger.Errorf(c, "svc.GetUserGroupById err: %v", err)
-			response.ToErrorNotFoundHtml(errcode.ErrorUserGroupNotFoundFail)
+			u.ToErrorNotFoundHtml(c, errcode.ErrorUserGroupNotFoundFail)
 			return
 		}
 		userList, err := svc.GetUserListAll()
 		if err != nil {
 			global.Logger.Errorf(c, "svc.GetUserListAll errs: %v", err)
-			response.ToErrorBadRequestHtml(errcode.ErrorGetUserListFail)
+			u.ToErrorBadRequestHtml(c, errcode.ErrorGetUserListFail)
 			return
 		}
 		u.RenderHtml(c, http.StatusOK, "group/update", gin.H{

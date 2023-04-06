@@ -114,20 +114,19 @@ func (u *UserController) Create(c *gin.Context) {
 func (u *UserController) Update(c *gin.Context) {
 	if c.Request.Method == http.MethodGet {
 		param := request.UpdateUserGetRequest{}
-		response := app.NewResponse(c)
 		valid, errs := app.BindAndValid(c, &param)
 		if !valid {
 			global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
 			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
 			// 参数错误
-			response.ToErrorBadRequestHtml(errRsp)
+			u.ToErrorBadRequestHtml(c, errRsp)
 			return
 		}
 		svc := service.New(c.Request.Context())
 		user, _ := svc.GetUserInfoById(param.ID)
 		if user == nil {
 			// 没有数据
-			response.ToErrorNotFoundHtml(errcode.ErrorUserNotFound)
+			u.ToErrorNotFoundHtml(c, errcode.ErrorUserNotFound)
 			return
 		}
 		u.RenderHtml(c, http.StatusOK, "user/update", user)

@@ -1,7 +1,7 @@
 /*
  * @Author: GG
  * @Date: 2023-03-31 09:33:39
- * @LastEditTime: 2023-04-03 16:03:39
+ * @LastEditTime: 2023-04-06 16:31:28
  * @LastEditors: GG
  * @Description:
  * @FilePath: \oms\internal\controller\menus.go
@@ -51,12 +51,11 @@ func (m *MenusController) List(c *gin.Context) {
 
 func (m *MenusController) Create(c *gin.Context) {
 	if c.Request.Method == http.MethodGet {
-		response := app.NewResponse(c)
 		svc := service.New(c.Request.Context())
 		list, err := svc.GetParentMenusList()
 		if err != nil {
 			global.Logger.Errorf(c, "svc.GetParentMenusList err: %v", err)
-			response.ToErrorBadRequestHtml(errcode.ErrorGetMenusListFail)
+			m.ToErrorBadRequestHtml(c, errcode.ErrorGetMenusListFail)
 			return
 		}
 		m.RenderHtml(c, http.StatusOK, "menus/create", gin.H{
@@ -94,13 +93,11 @@ func (m *MenusController) Create(c *gin.Context) {
 func (m *MenusController) Update(c *gin.Context) {
 	if c.Request.Method == http.MethodGet {
 		param := request.UpdateMenusGetRequest{}
-		response := app.NewResponse(c)
-
 		valid, errs := app.BindAndValid(c, &param)
 		if !valid {
 			global.Logger.Error(c, "app.BindAndValid errs: %v", errs)
 			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
-			response.ToErrorBadRequestHtml(errRsp)
+			m.ToErrorBadRequestHtml(c, errRsp)
 			return
 		}
 
@@ -108,13 +105,13 @@ func (m *MenusController) Update(c *gin.Context) {
 		menus, err := svc.GetMenusById(param.ID)
 		if err != nil {
 			global.Logger.Errorf(c, "svc.GetMenusById err: %v", err)
-			response.ToErrorBadRequestHtml(errcode.ErrorMenusNotFoundFail)
+			m.ToErrorBadRequestHtml(c, errcode.ErrorMenusNotFoundFail)
 			return
 		}
 		list, err := svc.GetParentMenusList()
 		if err != nil {
 			global.Logger.Errorf(c, "svc.GetParentMenusList err: %v", err)
-			response.ToErrorBadRequestHtml(errcode.ErrorGetMenusListFail)
+			m.ToErrorBadRequestHtml(c, errcode.ErrorGetMenusListFail)
 			return
 		}
 		m.RenderHtml(c, http.StatusOK, "menus/update", gin.H{
