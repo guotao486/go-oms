@@ -1,7 +1,7 @@
 <!--
  * @Author: GG
  * @Date: 2023-03-31 14:52:19
- * @LastEditTime: 2023-03-31 17:09:08
+ * @LastEditTime: 2023-04-06 15:40:49
  * @LastEditors: GG
  * @Description: 
  * @FilePath: \oms\templates\menus\update.html
@@ -35,7 +35,7 @@
                 <select name="parent_id">
                     <option value="0">请选择</option>
                     {{range $pm := .data.parentMenus}}
-                    <option value="{{$pm.ID}}" {{eq $pm.ID $.data.menusInfo.ParentID}}>{{$pm.Title}}</option>
+                    <option value="{{$pm.ID}}" {{if eq $pm.ID $.data.menusInfo.ParentID }} selected {{end}}>{{$pm.Title}}</option>
                     {{end}}
                 </select>
             </div>
@@ -43,8 +43,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label">身份权限</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="role" value="1" title="管理员" >
-                <input type="checkbox" name="role" value="2" title="普通成员">
+                <input type="checkbox" name="role" value="1" title="管理员" {{if inString .data.menusInfo.Role "1"}} checked="" {{end}}>
+                <input type="checkbox" name="role" value="2" title="普通成员" {{if inString .data.menusInfo.Role "2"}} checked="" {{end}}>
             </div>
         </div>
         <div class="layui-form-item">

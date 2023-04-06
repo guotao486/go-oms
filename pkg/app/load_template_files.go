@@ -85,11 +85,24 @@ func LoadTemplateFiles() multitemplate.Renderer {
 func LoadFuncs() template.FuncMap {
 	return template.FuncMap{
 		"getImagesUrl": GetImagesUrl,
+		"inString":     InString,
 	}
 }
 
+// 返回完整的图片地址
 func GetImagesUrl(images string) string {
 	images = global.AppSetting.UploadServerUrl + "/" + images
 
 	return images
+}
+
+// 检查拼接的字符串是否有出现的关键词
+func InString(s, k string) bool {
+	ss := strings.Split(s, ",")
+	for _, v := range ss {
+		if k == v {
+			return true
+		}
+	}
+	return false
 }

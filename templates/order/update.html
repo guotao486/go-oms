@@ -122,7 +122,7 @@
             <div class="layui-input-inline">
                 <select name="order_currency" lay-verify="required" lay-reqtext="订单货币是必填项，岂能为空？">
                     {{range $c := .data.currency}}
-                    <option value="{{$c.ID}}" {{if eq $c.ID $.data.orderInfo.OrderCurrency}}checked="" {{end}}>{{$c.Name}}</option>
+                    <option value="{{$c.ID}}" {{if eq $c.ID $.data.orderInfo.OrderCurrency}}selected {{end}}>{{$c.Name}}</option>
                     {{end}}
                 </select>
             </div>
@@ -133,7 +133,7 @@
             <div class="layui-input-inline">
                 <select name="payment_type" lay-verify="required" lay-reqtext="支付类型是必填项，岂能为空？">
                     {{range $pt := .data.paymentType}}
-                    <option value="{{$pt.ID}}" {{if eq $pt.ID $.data.orderInfo.PaymentType}}checked="" {{end}}>{{$pt.Name}}</option>
+                    <option value="{{$pt.ID}}" {{if eq $pt.ID $.data.orderInfo.PaymentType}}selected {{end}}>{{$pt.Name}}</option>
                     {{end}}
                 </select>
             </div>
@@ -141,7 +141,7 @@
             <div class="layui-input-inline">
                 <select name="payment_status" lay-verify="required" lay-reqtext="支付状态是必填项，岂能为空？">
                     {{range $ps := .data.paymentStatus}}
-                    <option value="{{$ps.ID}}" {{if eq $ps.ID $.data.orderInfo.PaymentStatus}}checked="" {{end}}>{{$ps.Name}}</option>
+                    <option value="{{$ps.ID}}" {{if eq $ps.ID $.data.orderInfo.PaymentStatus}}selected {{end}}>{{$ps.Name}}</option>
                     {{end}}
                 </select>
             </div>
@@ -151,7 +151,7 @@
             <div class="layui-input-inline">
                 <select name="order_shipping" >
                     {{range $os := .data.orderShipping}}
-                    <option value="{{$os.ID}}" {{if eq $os.ID $.data.orderInfo.OrderShipping}}checked="" {{end}}>{{$os.Name}}</option>
+                    <option value="{{$os.ID}}" {{if eq $os.ID $.data.orderInfo.OrderShipping}}selected {{end}}>{{$os.Name}}</option>
                     {{end}}
                 </select>
             </div>
@@ -159,7 +159,7 @@
             <div class="layui-input-inline">
                 <select name="order_status" lay-verify="required" lay-reqtext="订单状态是必填项，岂能为空？">
                     {{range $os := .data.orderStatus}}
-                    <option value="{{$os.ID}}" {{if eq $os.ID $.data.orderInfo.OrderStatus}}checked="" {{end}}>{{$os.Name}}</option>
+                    <option value="{{$os.ID}}" {{if eq $os.ID $.data.orderInfo.OrderStatus}}selected {{end}}>{{$os.Name}}</option>
                     {{end}}
                 </select>
             </div>

@@ -19,7 +19,7 @@
             <label class="layui-form-label">状态</label>
             <div class="layui-input-block">
                 <input type="radio" name="state" value="1" title="正常" {{if eq .data.detail.State 1}} checked="" {{end}}>
-                <input type="radio" name="state" value="2" title="禁止" >
+                <input type="radio" name="state" value="2" title="禁止" {{if eq .data.detail.State 2}} checked="" {{end}}>
             </div>
         </div>
         <div class="layui-form-item">
